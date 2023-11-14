@@ -611,5 +611,5 @@ int main(){
     }else{
         printf("%d\n",res);
     }
-    //printRecLog();//this line prints trace table
+    printRecLog();//this line prints trace table
 }

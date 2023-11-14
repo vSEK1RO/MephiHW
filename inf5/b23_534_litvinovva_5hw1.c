@@ -102,6 +102,11 @@ long int tddiv(long int a, long int b){
     flag=0;exept=0;
     long int _a,_b,_res,res;
     _a = ttod(a);
+    if(b==0){
+        flag=0;
+        exept=5;
+        return 0;
+    }
     _b = ttod(b);
     _res=_a/_b;
     res = dtot(_res);
