@@ -10,7 +10,7 @@
 //                 https://github.com/vSEK1RO
 */
 //#endclude "../clib/src/title.h"
-//#include "../clib/src/array.h"
+#include "../clib/src/array.h"
 #ifndef ARR_TYPE
 #define ARR_TYPE int
 #endif

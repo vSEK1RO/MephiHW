@@ -1,3 +1,4 @@
+/************************** Thu Nov 23 12:04:09 2023 **************************/
 //#include "../clib/src/title.h"
 /*                                _      _       __   _        _              */
 /*        _ __ ___    ___  _ __  | |__  (_)     / /  (_)  ___ (_) ___         */
@@ -10,6 +11,8 @@
 /*                       https://github.com/vSEK1RO                           */
 /*                                                                            */
 //#endclude "../clib/src/title.h"
+/******************************* INCLUDES START *******************************/
+
 //#include "../clib/src/array.h"
 #ifndef ARR_TYPE
 #define ARR_TYPE int
@@ -336,90 +339,126 @@ void ARR_FUNC(ARR_TYPE,reverse)(ARR_TYPE * a)
 #undef ARR_TYPE
 //#endclude "../clib/src/array.h"
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+/********************************* CODE START *********************************/
+
+int get_rand(int left, int right);
+int * get_rand_data();
+int * get_io_data();
+void arr_print_int(int * arr);
+void arr_merge_int(int * arr, int left, int right, int * cntAssign, int * cntCompar);
+void sort_arr_merge_int(int * a, int left, int right, int * cntAssign, int * cntCompar);
+
+int main()
+{
+    srand(time(NULL));
+    int * arr;
+    //arr=get_rand_data();
+    arr=get_io_data();
+    arr_print_int(arr);
+    int cntAssign=0, cntCompar=0;
+    sort_arr_merge_int(arr,0,arr_len_int(arr)-1,&cntAssign,&cntCompar);
+    arr_print_int(arr);
+    arr_del_int(arr);
+    printf("%d %d\n",cntAssign,cntCompar);
+}
+
+/**************************** IMPLEMENTATIONS START ***************************/
+
+int get_rand(int l, int r)
+{
+    return rand()%(r-l)+l;
+}
+
+int * get_rand_data()
+{
+    int n = 5;//get_rand(10,20);
+    int * a = arr_init_int(n);
+    for(int i=0;i<n;i++){
+        a[i]=get_rand(0,100);
+    }
+    return a;
+}
+
+int * get_io_data()
+{
+    int n;
+    scanf("%d",&n);
+    int * a = arr_init_int(n);
+    for(int i=0;i<n;i++){
+        scanf("%d",a+i);
+    }
+    return a;
+}
 
 void arr_print_int(int * a)
 {
     for(int i=0;i<arr_len_int(a);i++){
-        printf(i==arr_len_int(a)-1?"%3d\n":"%3d",i+1);
+        printf("%3d",i+1);
     }
+    printf("\n");
     for(int i=0;i<arr_len_int(a);i++){
-        printf(i==arr_len_int(a)-1?"%3d\n":"%3d",a[i]);
+        printf("%3d",a[i]);
     }
+    printf("\n\n");
 }
 
-int * sort_bub_int(int * a)// int * res = {cntAssign, cntCompar}
+void arr_merge_int(int * arr, int left, int m, int right, int * cntAssign, int * cntCompar)
 {
-    int cntAssign=0, cntCompar=0;
-    for(int i=arr_len_int(a)-1;i>0;i--){
-        for(int j=0;j<i;j++){
-            cntCompar+=1;
-            if(a[j]>a[j+1]){
-                arr_swap_int(a,j,j+1);
-                cntAssign+=3;
-            }
-        }
-        printf("\n");
-        arr_print_int(a);
+    int i, j, k; 
+    int n1 = m - left + 1; 
+    int n2 = right - m; 
+    int L[n1], R[n2];
+    for (i = 0; i < n1; i++){
+        *cntAssign+=1;
+        L[i] = arr[left + i];
     }
-    int * res = arr_init_int(2);
-    res[0]=cntAssign;
-    res[1]=cntCompar;
-    return res;
+    for (j = 0; j < n2; j++){
+        *cntAssign+=1;
+        R[j] = arr[m + 1 + j];
+    }
+    i = 0; 
+    j = 0; 
+    k = left; 
+    while (i < n1 && j < n2) { 
+        if (L[i] <= R[j]) { 
+            *cntAssign+=1;
+            *cntCompar+=1;
+            arr[k] = L[i]; 
+            i++; 
+        } 
+        else { 
+            *cntAssign+=1;
+            *cntCompar+=1;
+            arr[k] = R[j]; 
+            j++; 
+        } 
+        k++; 
+    } 
+    while (i < n1) { 
+        *cntAssign+=1;
+        arr[k] = L[i]; 
+        i++; 
+        k++; 
+    } 
+    while (j < n2) { 
+        *cntAssign+=1;
+        arr[k] = R[j]; 
+        j++; 
+        k++; 
+    } 
 }
 
-int * sort_ins_int(int * a)// int * res = {cntAssign, cntCompar}
+void sort_arr_merge_int(int * a, int left, int right, int * cntAssign, int * cntCompar)
 {
-    int cntAssign=0, cntCompar=0;
-    int buffInd,buff;
-    for(int i=1;i<arr_len_int(a);i++){
-        buffInd=0;
-        buff=a[i];
-        cntAssign++;
-        cntCompar++;
-        while(a[buffInd]<a[i]){
-            cntCompar++;
-            buffInd++;
-        }
-        if(buffInd==i){
-            cntCompar--;
-        }
-        for(int j=i;j>buffInd;j--){
-            a[j]=a[j-1];
-            cntAssign++;
-        }
-        a[buffInd]=buff;
-        cntAssign++;
-        printf("\n");
-        arr_print_int(a);
+    if(left<right){
+        int m = left + (right - left) / 2; 
+        sort_arr_merge_int(a,left,m,cntAssign,cntCompar);
+        sort_arr_merge_int(a,m+1,right,cntAssign,cntCompar);
+        arr_merge_int(a,left,m,right,cntAssign,cntCompar);
     }
-    int * res = arr_init_int(2);
-    res[0]=cntAssign;
-    res[1]=cntCompar;
-    return res;
 }
 
-int main()
-{
-    int n;
-    scanf("%d",&n);
-    int * din=arr_init_int(n);
-    for(int i=0;i<n;i++){
-        scanf("%d",din+i);
-    }
-    arr_print_int(din);
-
-    int * arrBub, * arrIns;
-    arr_copy_int(&arrBub,din);
-    arr_copy_int(&arrIns,din);
-    arr_del_int(din);
-    
-    int * resIns = sort_ins_int(arrIns);
-    arr_del_int(arrIns);
-    printf("%d %d\n",resIns[0],resIns[1]);
-    arr_del_int(resIns);
-
-    int * resBub = sort_bub_int(arrBub);
-    arr_del_int(arrBub);
-    printf("%d %d\n",resBub[0],resBub[1]);
-    arr_del_int(resBub);
-}
+/********************************* PROGRAM END ********************************/

@@ -1,4 +1,4 @@
-/************************** Mon Nov 13 22:15:46 2023 **************************/
+/************************** Mon Nov 27 13:44:21 2023 **************************/
 //#include "../clib/src/title.h"
 /*                                _      _       __   _        _              */
 /*        _ __ ___    ___  _ __  | |__  (_)     / /  (_)  ___ (_) ___         */
@@ -13,647 +13,6 @@
 //#endclude "../clib/src/title.h"
 /******************************* INCLUDES START *******************************/
 
-//#include "../clib/src/numsys.h"
-#ifndef NUMSYS_H
-#define NUMSYS_H
-
-#include <inttypes.h>
-
-char numsys_dtoc(int64_t digit);
-int64_t numsys_ctod(char digit);
-char * numsys_ntos(int64_t num, uint8_t base);
-int64_t numsys_ston(char * str, uint8_t base);
-
-//#include "numsys.c"
-//#include "string.h"
-#ifndef ITERABLE_STRING_H
-#define ITERABLE_STRING_H
-
-#include <inttypes.h>
-
-char * str_init(uint64_t len);
-char * str_cast(const char * a);
-uint64_t str_len(char * a);
-void str_del(char * a);
-void str_copy(char ** a, char * b);
-uint8_t str_isEqual(char * a, char * b);
-void str_swap(char * a, uint64_t i1, uint64_t i2);
-void str_rearr(char * a, uint64_t i1, uint64_t i2);
-void str_erase(char ** a, uint64_t i1, uint64_t i2);
-char * str_substr(char * a, uint64_t i1, uint64_t i2);
-uint64_t str_find(char * a, char key, uint64_t entry);
-uint64_t str_findStr(char * a, char * b, uint64_t entry);
-uint64_t str_count(char * a, char n);
-uint64_t str_countStr(char * a, char * b);
-void str_pob(char ** a);
-void str_pub(char ** a, char n);
-void str_pof(char ** a);
-void str_puf(char ** a, char n);
-char * str_concat(char * a, char * b);
-void str_ins(char ** a, char n, uint64_t i);
-void str_insStr(char ** a, char * b, uint64_t i);
-void str_repl(char ** a, char n, uint64_t i1, uint64_t i2);
-void str_replStr(char ** a, char * b, uint64_t i1, uint64_t i2);
-void str_reverse(char * a);
-
-//#include "string.c"
-#include <stdlib.h>
-
-char * str_init(uint64_t len)
-{
-    char * a=(char *)calloc(sizeof(char),len+1);
-    a[len]='\0';
-    for(uint64_t i=0;i<len;i++){
-        a[i]=' ';
-    }
-    return a;
-}
-
-char * str_cast(const char * a)
-{   
-    uint64_t len=0;
-    while(a[len]!='\0'){
-        len++;
-    }
-    char * b=str_init(len);
-    for(uint64_t i=0;i<len;i++){
-        b[i]=a[i];
-    }
-    return b;
-}
-
-uint64_t str_len(char * a)
-{
-    uint64_t len=0;
-    while(a[len]!='\0'){
-        len++;
-    }
-    return len;
-}
-
-void str_del(char * a)
-{
-    free((void *)a);
-}
-
-void str_copy(char ** a, char * b)
-{
-    *a = str_init(str_len(b));
-    for(uint64_t i=0;i<str_len(b);i++){
-        (*a)[i]=b[i];
-    }
-}
-
-uint8_t str_isEqual(char * a, char * b)
-{
-    if(str_len(a)!=str_len(b)){
-        return 0;
-    }
-    for(uint64_t i=0;i<str_len(a);i++){
-        if(a[i]!=b[i]){
-            return 0;
-        }
-    }
-    return 1;
-}
-
-void str_swap(char * a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(a);
-    i2%=str_len(a);
-    a[i1]+=a[i2];
-    a[i2]=a[i1]-a[i2];
-    a[i1]-=a[i2];
-}
-
-void str_rearr(char * a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(a);
-    i2%=str_len(a);
-    char buff=a[i1];
-    for(uint64_t i=i1;i>i2;i--){
-        a[i]=a[i-1];
-    }
-    a[i2]=buff;
-}
-
-void str_erase(char ** a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(*a)+1;
-    i2%=str_len(*a)+1;
-    char * b=str_init(str_len(*a)-i2+i1);
-    for(uint64_t i=0;i<i1;i++){
-        b[i]=(*a)[i];
-    }
-    for(uint64_t i=i2;i<str_len(*a);i++){
-        b[i+i1-i2]=(*a)[i];
-    }
-    str_del(*a);
-    *a=b;
-}
-
-char * str_substr(char * a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(a)+1;
-    i2%=str_len(a)+1;
-    char * b=str_init(i2-i1);
-    for(uint64_t i=0;i<i2-i1;i++){
-        b[i]=a[i+i1];
-    }
-    return b;
-}
-
-uint64_t str_find(char * a, char key, uint64_t entry)
-{
-    entry%=str_len(a)+1;
-    uint64_t i=-1;
-    while(entry && i!=str_len(a)){
-        i++;
-        if(a[i]==key){
-            entry--;
-        }
-    }
-    return (entry!=0?-1:i);
-}
-
-uint64_t str_findStr(char * a, char * b, uint64_t entry)
-{
-    entry%=str_len(a)+1;
-    uint64_t i=-1;
-    while(entry && i!=(str_len(a)-str_len(b))){
-        i++;
-        if(str_isEqual(str_substr(a,i,i+str_len(b)),b)){
-            entry--;
-        }
-    }
-    return (entry!=0?-1:i);
-}
-
-uint64_t str_count(char * a, char n)
-{
-    uint64_t c=0;
-    for(uint64_t i=0;i<str_len(a);i++){
-        if(a[i]==n){
-            c++;
-        }
-    }
-    return c;
-}
-
-uint64_t str_countStr(char * a, char * b)
-{
-    uint64_t c=0;
-    for(uint64_t i=0;i<str_len(a)-str_len(b);i++){
-        if(str_isEqual(str_substr(a,i,i+str_len(b)),b)){
-            c++;
-        }
-    }
-    return c;
-}
-
-void str_pob(char ** a)
-{   
-    if(str_len(*a)!=0){
-        char * b=str_init(str_len(*a)-1);
-        for(uint64_t i=0;i<str_len(*a)-1;i++){
-            b[i]=(*a)[i];
-        }
-        str_del(*a);
-        *a=b;
-    }
-}
-
-void str_pub(char ** a, char n)
-{
-    char * b=str_init(str_len(*a)+1);
-    for(uint64_t i=0;i<str_len(*a);i++){
-        b[i]=(*a)[i];
-    }
-    b[str_len(b)-1]=n;
-    str_del(*a);
-    *a=b;
-}
-
-void str_pof(char ** a)
-{
-    if(str_len(*a)!=0){
-        char * b=str_init(str_len(*a)-1);
-        for(uint64_t i=0;i<str_len(*a)-1;i++){
-            b[i]=(*a)[i+1];
-        }
-        str_del(*a);
-        *a=b;
-    }
-}
-
-void str_puf(char ** a, char n)
-{
-    char * b=str_init(str_len(*a)+1);
-    for(uint64_t i=0;i<str_len(*a);i++){
-        b[i+1]=(*a)[i];
-    }
-    b[0]=n;
-    str_del(*a);
-    *a=b;
-}
-
-char * str_concat(char * a, char * b)
-{
-    char * c=str_init(str_len(a)+str_len(b));
-    for(uint64_t i=0;i<str_len(a);i++){
-        c[i]=a[i];
-    }
-    for(uint64_t i=0;i<str_len(b);i++){
-        c[i+str_len(a)]=b[i];
-    }
-    return c;
-}
-
-void str_ins(char ** a, char n, uint64_t i)
-{
-    i%=str_len(*a)+1;
-    str_pub(a,n);
-    str_rearr(*a,str_len(*a)-1,i);
-}
-
-void str_insStr(char ** a, char * b, uint64_t i)
-{
-    i%=str_len(*a)+1;
-    *a=str_concat(str_concat(str_substr(*a,0,i),b),str_substr(*a,i,str_len(*a)));
-}
-
-void str_repl(char ** a, char n, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(*a)+1;
-    i2%=str_len(*a)+1;
-    str_erase(a,i1,i2);
-    str_ins(a,n,i1);
-}
-
-void str_replStr(char ** a, char * b, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(*a)+1;
-    i2%=str_len(*a)+1;
-    str_erase(a,i1,i2);
-    str_insStr(a,b,i1);
-}
-
-void str_reverse(char * a)
-{
-    for(uint64_t i=0;i<str_len(a)/2;i++){
-        str_swap(a,i,str_len(a)-1-i);
-    }
-}
-//#endclude "string.c"
-#endif
-//#endclude "string.h"
-#include <math.h>
-
-char numsys_dtoc(int64_t digit)
-{
-    if(digit>=0 && digit<10){
-        return (char)(48+digit);
-    }
-    if(digit>=10 && digit<36){
-        return (char)(55+digit);
-    }
-    if(digit>=36 && digit<62){
-        return (char)(61+digit);
-    }
-    return (char)0;
-}
-
-int64_t numsys_ctod(char digit)
-{
-    if(digit>47 && digit<=57){
-        return (int64_t)(digit-48);
-    }
-    if(digit>64 && digit<=90){
-        return (int64_t)(digit-55);
-    }
-    if(digit>96 && digit<=122){
-        return (int64_t)(digit-61);
-    }
-    return (int64_t)-1;
-}
-
-char * numsys_ntos(int64_t num, uint8_t base)
-{
-    char * str = str_init(0);
-    if(num>0){
-        while(num){
-            str_puf(&str, numsys_dtoc(num%base));
-            num/=base;
-        }
-    }else{
-        num*=-1;
-        while(num){
-            str_puf(&str, numsys_dtoc(num%base));
-            num/=base;
-        }
-        str_puf(&str, '-');
-    }
-    return str;
-}
-
-int64_t numsys_ston(char * str, uint8_t base)
-{
-    int64_t num = 0;
-    for(uint64_t i=0;i<str_len(str);i++){
-        if(str[str_len(str)-1-i]!='-'){
-            num+=numsys_ctod(str[str_len(str)-1-i])*pow(base,i);
-        }else{
-            num*=-1;
-        }
-    }
-    return num;
-}
-//#endclude "numsys.c"
-
-#endif
-//#endclude "../clib/src/numsys.h"
-//#include "../clib/src/string.h"
-#ifndef ITERABLE_STRING_H
-#define ITERABLE_STRING_H
-
-#include <inttypes.h>
-
-char * str_init(uint64_t len);
-char * str_cast(const char * a);
-uint64_t str_len(char * a);
-void str_del(char * a);
-void str_copy(char ** a, char * b);
-uint8_t str_isEqual(char * a, char * b);
-void str_swap(char * a, uint64_t i1, uint64_t i2);
-void str_rearr(char * a, uint64_t i1, uint64_t i2);
-void str_erase(char ** a, uint64_t i1, uint64_t i2);
-char * str_substr(char * a, uint64_t i1, uint64_t i2);
-uint64_t str_find(char * a, char key, uint64_t entry);
-uint64_t str_findStr(char * a, char * b, uint64_t entry);
-uint64_t str_count(char * a, char n);
-uint64_t str_countStr(char * a, char * b);
-void str_pob(char ** a);
-void str_pub(char ** a, char n);
-void str_pof(char ** a);
-void str_puf(char ** a, char n);
-char * str_concat(char * a, char * b);
-void str_ins(char ** a, char n, uint64_t i);
-void str_insStr(char ** a, char * b, uint64_t i);
-void str_repl(char ** a, char n, uint64_t i1, uint64_t i2);
-void str_replStr(char ** a, char * b, uint64_t i1, uint64_t i2);
-void str_reverse(char * a);
-
-//#include "string.c"
-#include <stdlib.h>
-
-char * str_init(uint64_t len)
-{
-    char * a=(char *)calloc(sizeof(char),len+1);
-    a[len]='\0';
-    for(uint64_t i=0;i<len;i++){
-        a[i]=' ';
-    }
-    return a;
-}
-
-char * str_cast(const char * a)
-{   
-    uint64_t len=0;
-    while(a[len]!='\0'){
-        len++;
-    }
-    char * b=str_init(len);
-    for(uint64_t i=0;i<len;i++){
-        b[i]=a[i];
-    }
-    return b;
-}
-
-uint64_t str_len(char * a)
-{
-    uint64_t len=0;
-    while(a[len]!='\0'){
-        len++;
-    }
-    return len;
-}
-
-void str_del(char * a)
-{
-    free((void *)a);
-}
-
-void str_copy(char ** a, char * b)
-{
-    *a = str_init(str_len(b));
-    for(uint64_t i=0;i<str_len(b);i++){
-        (*a)[i]=b[i];
-    }
-}
-
-uint8_t str_isEqual(char * a, char * b)
-{
-    if(str_len(a)!=str_len(b)){
-        return 0;
-    }
-    for(uint64_t i=0;i<str_len(a);i++){
-        if(a[i]!=b[i]){
-            return 0;
-        }
-    }
-    return 1;
-}
-
-void str_swap(char * a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(a);
-    i2%=str_len(a);
-    a[i1]+=a[i2];
-    a[i2]=a[i1]-a[i2];
-    a[i1]-=a[i2];
-}
-
-void str_rearr(char * a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(a);
-    i2%=str_len(a);
-    char buff=a[i1];
-    for(uint64_t i=i1;i>i2;i--){
-        a[i]=a[i-1];
-    }
-    a[i2]=buff;
-}
-
-void str_erase(char ** a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(*a)+1;
-    i2%=str_len(*a)+1;
-    char * b=str_init(str_len(*a)-i2+i1);
-    for(uint64_t i=0;i<i1;i++){
-        b[i]=(*a)[i];
-    }
-    for(uint64_t i=i2;i<str_len(*a);i++){
-        b[i+i1-i2]=(*a)[i];
-    }
-    str_del(*a);
-    *a=b;
-}
-
-char * str_substr(char * a, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(a)+1;
-    i2%=str_len(a)+1;
-    char * b=str_init(i2-i1);
-    for(uint64_t i=0;i<i2-i1;i++){
-        b[i]=a[i+i1];
-    }
-    return b;
-}
-
-uint64_t str_find(char * a, char key, uint64_t entry)
-{
-    entry%=str_len(a)+1;
-    uint64_t i=-1;
-    while(entry && i!=str_len(a)){
-        i++;
-        if(a[i]==key){
-            entry--;
-        }
-    }
-    return (entry!=0?-1:i);
-}
-
-uint64_t str_findStr(char * a, char * b, uint64_t entry)
-{
-    entry%=str_len(a)+1;
-    uint64_t i=-1;
-    while(entry && i!=(str_len(a)-str_len(b))){
-        i++;
-        if(str_isEqual(str_substr(a,i,i+str_len(b)),b)){
-            entry--;
-        }
-    }
-    return (entry!=0?-1:i);
-}
-
-uint64_t str_count(char * a, char n)
-{
-    uint64_t c=0;
-    for(uint64_t i=0;i<str_len(a);i++){
-        if(a[i]==n){
-            c++;
-        }
-    }
-    return c;
-}
-
-uint64_t str_countStr(char * a, char * b)
-{
-    uint64_t c=0;
-    for(uint64_t i=0;i<str_len(a)-str_len(b);i++){
-        if(str_isEqual(str_substr(a,i,i+str_len(b)),b)){
-            c++;
-        }
-    }
-    return c;
-}
-
-void str_pob(char ** a)
-{   
-    if(str_len(*a)!=0){
-        char * b=str_init(str_len(*a)-1);
-        for(uint64_t i=0;i<str_len(*a)-1;i++){
-            b[i]=(*a)[i];
-        }
-        str_del(*a);
-        *a=b;
-    }
-}
-
-void str_pub(char ** a, char n)
-{
-    char * b=str_init(str_len(*a)+1);
-    for(uint64_t i=0;i<str_len(*a);i++){
-        b[i]=(*a)[i];
-    }
-    b[str_len(b)-1]=n;
-    str_del(*a);
-    *a=b;
-}
-
-void str_pof(char ** a)
-{
-    if(str_len(*a)!=0){
-        char * b=str_init(str_len(*a)-1);
-        for(uint64_t i=0;i<str_len(*a)-1;i++){
-            b[i]=(*a)[i+1];
-        }
-        str_del(*a);
-        *a=b;
-    }
-}
-
-void str_puf(char ** a, char n)
-{
-    char * b=str_init(str_len(*a)+1);
-    for(uint64_t i=0;i<str_len(*a);i++){
-        b[i+1]=(*a)[i];
-    }
-    b[0]=n;
-    str_del(*a);
-    *a=b;
-}
-
-char * str_concat(char * a, char * b)
-{
-    char * c=str_init(str_len(a)+str_len(b));
-    for(uint64_t i=0;i<str_len(a);i++){
-        c[i]=a[i];
-    }
-    for(uint64_t i=0;i<str_len(b);i++){
-        c[i+str_len(a)]=b[i];
-    }
-    return c;
-}
-
-void str_ins(char ** a, char n, uint64_t i)
-{
-    i%=str_len(*a)+1;
-    str_pub(a,n);
-    str_rearr(*a,str_len(*a)-1,i);
-}
-
-void str_insStr(char ** a, char * b, uint64_t i)
-{
-    i%=str_len(*a)+1;
-    *a=str_concat(str_concat(str_substr(*a,0,i),b),str_substr(*a,i,str_len(*a)));
-}
-
-void str_repl(char ** a, char n, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(*a)+1;
-    i2%=str_len(*a)+1;
-    str_erase(a,i1,i2);
-    str_ins(a,n,i1);
-}
-
-void str_replStr(char ** a, char * b, uint64_t i1, uint64_t i2)
-{
-    i1%=str_len(*a)+1;
-    i2%=str_len(*a)+1;
-    str_erase(a,i1,i2);
-    str_insStr(a,b,i1);
-}
-
-void str_reverse(char * a)
-{
-    for(uint64_t i=0;i<str_len(a)/2;i++){
-        str_swap(a,i,str_len(a)-1-i);
-    }
-}
-//#endclude "string.c"
-#endif
-//#endclude "../clib/src/string.h"
 //#include "../clib/src/array.h"
 #ifndef ARR_TYPE
 #define ARR_TYPE int
@@ -1222,196 +581,162 @@ void PTRARR_FUNC(PTRARR_TYPE,reverse)(PTRARR_TYPE ** a)
 #undef PTRARR_TEMPLATE
 #undef PTRARR_TYPE
 //#endclude "../clib/src/ptrarr.h"
-#include <limits.h>
-#include <ctype.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
+#include <limits.h>
 
 /********************************* CODE START *********************************/
 
-int getRand(int, int);
-void setRandFileData(const char *);
-int ** getFileData(const char *);
-int ** getIOData();
-int * getDigitCount(int ** a);
-void printHist(int * a);
-int * getMaxArray(int ** a);
+int ** get_io_data();
+void arr_print_int(int * a);
+void ptrarr_print_int(int ** a);
+int ** get_rows_mins(int ** a);
+int ** get_columns_maxs(int ** a);
+int * get_rows_with_max(int ** a);
+int * get_saddles(int ** a);
 
-int main()
+int main()  
 {
-    srand(time(NULL));
-    int ** inputData;
-/****************************** RANDOM FILE DATA ******************************/
-    // setRandFileData("test7hw1.txt");
-    // inputData = getFileData("test7hw1.txt");
-
-    // printf("Generated ptr array:\n");
-    // for(int i=0;i<ptrarr_len_int(inputData);i++){
-    //     printf("%4d",i+1);
-    //     for(int j=0;j<arr_len_int(inputData[i]);j++){
-    //         printf("%4d",inputData[i][j]);
-    //     }
-    //    printf("\n");
-    // }
-/******************************************************************************/
-    inputData = getIOData();
-    /*
-23432 9 134520 958 134520 38
-9832 107450 74635 4 2883
-15 69291 89641 10 134520
-85 124743 4 8217 61578 4 173
-    */
-
-    int * maxArray = getMaxArray(inputData);
-    int marrlen = arr_len_int(maxArray);
-    for(int i=0;i<marrlen;i++)printf(i!=marrlen-1?"%d ":"%d\n",maxArray[i]+1);
-
-    int * digitCount = getDigitCount(inputData);
-    //for(int i=0;i<10;i++)printf("%d ",digitCount[i]);
-    printf("\n");
-    printHist(digitCount);
-
-    for(int i=0;i<ptrarr_len_int(inputData);i++){
-        arr_del_int(inputData[i]);
+    //инициализация
+    int ** ordered_ptrarr = get_io_data();
+    int * saddles = get_saddles(ordered_ptrarr);
+    int * rows_with_max = get_rows_with_max(ordered_ptrarr);
+    //вывод в консоль
+    ptrarr_print_int(ordered_ptrarr);
+    arr_print_int(rows_with_max);
+    if(arr_len_int(saddles)==1){
+        printf("%d\n",saddles[0]);
+    }else if(arr_len_int(saddles)>1){
+        printf("%d %d\n",saddles[0],arr_len_int(saddles));
+    }else{
+        printf("-\n");
     }
-    return 0;
+    //чистка памяти
+    for(int i=0;i<ptrarr_len_int(ordered_ptrarr);i++){
+        arr_del_int(ordered_ptrarr[i]);
+    }
+    ptrarr_del_int(ordered_ptrarr);
+    arr_del_int(saddles);
+    arr_del_int(rows_with_max);
 }
 
 /**************************** IMPLEMENTATIONS START ***************************/
 
-int getRand(int l, int r)
+int ** get_io_data()
 {
-    return rand()%(r-l)+l;
-}
-
-void setRandFileData(const char * path)
-{
-    FILE * file = fopen(path,"w");
-    int a=getRand(1,30), b;
-    char * str = str_init(0);
-    char * buff;
-    for(int i=0;i<a;i++){
-        b=getRand(1,20);
-        for(int j=0;j<b;j++){
-            buff = numsys_ntos(getRand(1,1000),10);
-            if(j!=b-1)str_pub(&buff,' ');
-            str_insStr(&str,buff,str_len(str));
-            //printf("|%s|%s|\n",buff,str);
-            str_del(buff);
+    int m,n;
+    scanf("%d %d",&m,&n);
+    int ** a = ptrarr_init_int(m);
+    for(int i=0;i<m;i++){
+        a[i] = arr_init_int(n);
+        for(int j=0;j<n;j++){
+            scanf("%d",a[i]+j);
         }
-        str_pub(&str,'\n');
-        fputs(str,file);
-        str_erase(&str,0,str_len(str));
-    }
-    str_del(str);
-    fclose(file);
-}
-
-int ** getFileData(const char * path)
-{
-    FILE * file;
-    if((file = fopen(path,"r")) == NULL){
-        printf("File didn't find");
-    }
-    int ** a = ptrarr_init_int(1);
-    a[0]=arr_init_int(0);
-    char * buffStr = str_init(0);
-    int buff;
-    while((buff=getc(file))!=EOF){
-        if(!isspace(buff)){
-            str_pub(&buffStr,buff);
-        }
-        if(isspace(buff) && buff!='\n'){
-            arr_pub_int(a+ptrarr_len_int(a)-1,numsys_ston(buffStr,10));
-            str_erase(&buffStr,0,str_len(buffStr));
-        }
-        if(isspace(buff) && buff=='\n'){
-            arr_pub_int(a+ptrarr_len_int(a)-1,numsys_ston(buffStr,10));
-            ptrarr_pub_int(&a, arr_init_int(0));
-            str_erase(&buffStr,0,str_len(buffStr));
+        if(i%2==0){
+            arr_reverse_int(a[i]);
         }
     }
-    ptrarr_pob_int(&a);
-    str_del(buffStr);
-    fclose(file);
     return a;
 }
 
-int ** getIOData()
-{
-    int ** a = ptrarr_init_int(1);
-    a[0]=arr_init_int(0);
-    char * buffStr = str_init(0);
-    char buff, lastBuff='\n';
-    while((buff=getchar())!=lastBuff || buff!='\n'){
-        if(!isspace(buff)){
-            str_pub(&buffStr,buff);
-        }
-        if(isspace(buff) && buff!='\n'){
-            arr_pub_int(a+ptrarr_len_int(a)-1,numsys_ston(buffStr,10));
-            str_erase(&buffStr,0,str_len(buffStr));
-        }
-        if(isspace(buff) && buff=='\n'){
-            arr_pub_int(a+ptrarr_len_int(a)-1,numsys_ston(buffStr,10));
-            ptrarr_pub_int(&a, arr_init_int(0));
-            str_erase(&buffStr,0,str_len(buffStr));
-        }
-        lastBuff = buff;
-    }
-    ptrarr_pob_int(&a);
-    str_del(buffStr);
-    return a;
-}
-
-int * getDigitCount(int ** a)
-{
-    int * arr = arr_init_int(10);
-    char * buff;
-    for(int i=0;i<ptrarr_len_int(a);i++){
-        for(int j=0;j<arr_len_int(a[i]);j++){
-            buff = numsys_ntos(a[i][j],10);
-            for(int k=0;k<10;k++){
-                arr[k]+=str_count(buff,numsys_dtoc(k));
-            }
-            str_del(buff);
-        }
-    }
-    return arr;
-}
-
-void printHist(int * a)
+void arr_print_int(int * a)
 {
     for(int i=0;i<arr_len_int(a);i++){
-        printf("%d ",i);
-        for(int j=0;j<(a[i]%3==2?a[i]/3+1:a[i]/3);j++){
-            printf("*");
-        }
-        printf(" %d\n",a[i]);
+        printf(i==arr_len_int(a)-1?"%d\n":"%d ",a[i]);
     }
 }
 
-int * getMaxArray(int ** a)
+void ptrarr_print_int(int ** a)
 {
-    int * arr = arr_init_int(0);
-    int * maxArr = arr_init_int(0);
-    int max;
     for(int i=0;i<ptrarr_len_int(a);i++){
-        max=INT_MIN;
         for(int j=0;j<arr_len_int(a[i]);j++){
-            if(a[i][j]>max)max=a[i][j];
+            printf("%3d",a[i][j]);
         }
-        arr_pub_int(&maxArr,max);
+        printf("\n");
     }
-    max=INT_MIN;
-    for(int i=0;i<arr_len_int(maxArr);i++){
-        if(maxArr[i]>max)max=maxArr[i];
+    printf("\n");
+}
+
+int ** get_rows_mins(int ** a)
+{
+    int ** res = ptrarr_init_int(ptrarr_len_int(a));
+    int min = INT_MAX;
+    for(int i=0;i<ptrarr_len_int(a);i++){
+        min = INT_MAX;
+        for(int j=0;j<arr_len_int(a[i]);j++){
+            if(a[i][j]<min){
+                min=a[i][j];
+            }
+        }
+        res[i]=arr_init_int(0);
+        for(int j=0;j<arr_len_int(a[i]);j++){
+            if(a[i][j]==min){
+                arr_pub_int(res+i,j);
+            }
+        }
     }
-    for(int i=1;i<=arr_count_int(maxArr,max);i++){
-        arr_pub_int(&arr,arr_find_int(maxArr,max,i));
+    return res;
+}
+
+int ** get_columns_maxs(int ** a)
+{
+    int ** res = ptrarr_init_int(arr_len_int(a[0]));
+    int max = INT_MIN;
+    for(int i=0;i<arr_len_int(a[0]);i++){
+        max = INT_MIN;
+        for(int j=0;j<ptrarr_len_int(a);j++){
+            if(a[j][i]>max){
+                max=a[j][i];
+            }
+        }
+        res[i]=arr_init_int(0);
+        for(int j=0;j<ptrarr_len_int(a);j++){
+            if(a[j][i]==max){
+                arr_pub_int(res+i,j);
+            }
+        }
     }
-    arr_del_int(maxArr);
-    return arr;
+    return res;
+}
+
+int * get_rows_with_max(int ** a)
+{
+    int max = INT_MIN;
+    for(int i=0;i<ptrarr_len_int(a);i++){
+        for(int j=0;j<arr_len_int(a[i]);j++){
+            if(a[i][j]>max){
+                max = a[i][j];
+            }
+        }
+    }
+    int * res = arr_init_int(0);
+    for(int i=0;i<ptrarr_len_int(a);i++){
+        if(arr_count_int(a[i],max)!=0){
+            arr_pub_int(&res,i+1);
+        }
+    }
+    return res;
+}
+
+int * get_saddles(int ** a){
+    int * saddles = arr_init_int(0);
+    int ** rows_mins = get_rows_mins(a);
+    int ** columns_maxs = get_columns_maxs(a);
+    for(int i=0;i<ptrarr_len_int(a);i++){
+        for(int j=0;j<arr_len_int(a[i]);j++){
+            if(arr_count_int(rows_mins[i],j)!=0 && arr_count_int(columns_maxs[j],i)!=0){
+                arr_pub_int(&saddles,a[i][j]);
+            }
+        }
+    }
+    for(int i=0;i<ptrarr_len_int(rows_mins);i++){
+        arr_del_int(rows_mins[i]);
+    }
+    ptrarr_del_int(rows_mins);
+    for(int i=0;i<ptrarr_len_int(columns_maxs);i++){
+        arr_del_int(columns_maxs[i]);
+    }
+    ptrarr_del_int(columns_maxs);
+    return saddles;
 }
 
 /********************************* PROGRAM END ********************************/
