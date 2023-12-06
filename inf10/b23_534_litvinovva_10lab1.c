@@ -408,24 +408,25 @@ void sort_quick_int_cnt(int * a, int left, int right, int * cntAssign, int * cnt
     int pivot=a[(left+right)/2],l=left,r=right;
     while(l<=r){
         while(a[l]<pivot){
-            l++;
             *cntCompar+=1;
+            l++;
         }
         while(a[r]>pivot){
-            r--;
             *cntCompar+=1;
+            r--;
         }
-        *cntCompar+=3;
+        *cntCompar+=2;
         if(l<=r){
             arr_swap_int(a,l,r);
-            *cntAssign+=3;
             if(l!=r){
                 arr_print_int(a);
+                *cntAssign+=3;
             }
             l++;
             r--;
         }
     }
+    *cntAssign+=1;
     if(left<r){
         sort_quick_int_cnt(a,left,r,cntAssign,cntCompar);
     }

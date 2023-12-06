@@ -405,60 +405,86 @@ void arr_print_int(int * a)
     printf("\n\n");
 }
 
-void arr_merge_int(int * arr, int left, int m, int right, int * cntAssign, int * cntCompar)
+void sort_quick_int_cnt(int * a, int left, int right, int * cntAssign, int * cntCompar)
 {
-    int i, j, k; 
-    int n1 = m - left + 1; 
-    int n2 = right - m; 
-    int L[n1], R[n2];
-    for (i = 0; i < n1; i++){
-        *cntAssign+=1;
-        L[i] = arr[left + i];
-    }
-    for (j = 0; j < n2; j++){
-        *cntAssign+=1;
-        R[j] = arr[m + 1 + j];
-    }
-    i = 0; 
-    j = 0; 
-    k = left; 
-    while (i < n1 && j < n2) { 
-        if (L[i] <= R[j]) { 
-            *cntAssign+=1;
+    int pivot=a[(left+right)/2],l=left,r=right;
+    while(l<=r){
+        while(a[l]<pivot){
             *cntCompar+=1;
-            arr[k] = L[i]; 
-            i++; 
-        } 
-        else { 
-            *cntAssign+=1;
+            l++;
+        }
+        while(a[r]>pivot){
             *cntCompar+=1;
-            arr[k] = R[j]; 
-            j++; 
-        } 
-        k++; 
-    } 
-    while (i < n1) { 
-        *cntAssign+=1;
-        arr[k] = L[i]; 
-        i++; 
-        k++; 
-    } 
-    while (j < n2) { 
-        *cntAssign+=1;
-        arr[k] = R[j]; 
-        j++; 
-        k++; 
-    } 
+            r--;
+        }
+        *cntCompar+=2;
+        if(l<=r){
+            arr_swap_int(a,l,r);
+            if(l!=r){
+                printf("swap\n");   
+                *cntAssign+=3;
+            }
+            l++;
+            r--;
+        }
+    }
+    *cntAssign+=1;
+    if(left<r){
+        sort_quick_int_cnt(a,left,r,cntAssign,cntCompar);
+    }
+    if(l<right){
+        sort_quick_int_cnt(a,l,right,cntAssign,cntCompar);
+    }
 }
 
-void sort_arr_merge_int(int * a, int left, int right, int * cntAssign, int * cntCompar)
+void arr_merge_int(int * A, int first, int last, int * cntAssign, int * cntCompar)
 {
-    if(left<right){
-        int m = left + (right - left) / 2; 
-        sort_arr_merge_int(a,left,m,cntAssign,cntCompar);
-        sort_arr_merge_int(a,m+1,right,cntAssign,cntCompar);
-        arr_merge_int(a,left,m,right,cntAssign,cntCompar);
+    int * B = arr_init_int(arr_len_int(A));
+    int k;
+    int l, r;
+    int m;
+    m = (first + last) / 2;
+    l = first; r = m + 1;
+    k = 0;
+    while (l <= m && r <= last) {
+        *cntCompar+=1;
+        if (A[l] <= A[r]) { 
+            B[k] = A[l]; l++;
+        }
+        else {
+            B[k] = A[r]; r++;
+        }
+        k++;
     }
+
+    while (l <= m) {
+        B[k] = A[l]; l++; k++;
+    }
+    while (r <= last) {
+        B[k] = A[r]; r++; k++;
+    }
+    for (l = 0; l < k; l++)
+        A[first + l] = B[l];
+    arr_del_int(B);
+}
+
+void sort_arr_merge_int(int * A, int fst, int lst, int * cntAssign, int * cntCompar)
+{
+    int m; 
+    if (fst < lst)
+        if (lst - fst == 1) {
+            if (A[lst] < A[fst]){
+                arr_swap_int(A,fst,lst);
+                arr_print_int(A);
+                *cntAssign+=3;
+            }
+        }
+        else {
+            m = (fst + lst) / 2;
+            sort_arr_merge_int(A, fst, m, cntAssign, cntCompar);
+            sort_arr_merge_int(A, m + 1, lst, cntAssign, cntCompar);
+            arr_merge_int(A, fst, lst, cntAssign, cntCompar);
+        }
 }
 
 /********************************* PROGRAM END ********************************/

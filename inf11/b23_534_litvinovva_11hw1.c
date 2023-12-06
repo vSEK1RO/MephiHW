@@ -15,6 +15,8 @@
 
 #include <stdio.h>
 #include <ctype.h>
+#include <time.h>
+#include <string.h>
 //#include "../clib/src/string.h"
 #ifndef ITERABLE_STRING_H
 #define ITERABLE_STRING_H
@@ -868,21 +870,24 @@ void ARR_FUNC(ARR_TYPE,reverse)(ARR_TYPE * a)
 //#endclude "../clib/src/array.h"
 
 /********************************* CODE START *********************************/
-//
+
+int get_rand(int l, int r);
+char ** get_rand_data();
 char ** get_io_data();
 char ** get_file_data();
-void sort_quick_str(char ** a, int left, int right);
+void sort_bubble_str(char ** a);
 void print_subarrays(char ** ptrarr);
 
 int main()
 {
+    srand(time(NULL));
     //инициализация
     char ** strings;
-/******************************* READ FROM FILE *******************************/
+    //strings = get_rand_data();
     //strings = get_file_data();
     strings = get_io_data();
     //сортировка и вывод
-    sort_quick_str(strings,0,ptrarr_len_char(strings)-1);
+    sort_bubble_str(strings);
     for(int i=0;i<ptrarr_len_char(strings);i++){
         printf("%s\n",strings[i]);
     }
@@ -897,6 +902,34 @@ int main()
 
 /**************************** IMPLEMENTATIONS START ***************************/
 
+
+int get_rand(int l, int r)
+{
+    return rand()%(r-l)+l;
+}
+
+char ** get_rand_data()
+{
+    char ** b = ptrarr_init_char(get_rand(10,20));
+    char * buff = str_init(0);
+    int randLen;
+    for(int i=0;i<ptrarr_len_char(b);i++){
+        randLen = get_rand(5,10);
+        for(int j=0;j<randLen;j++){
+            str_pub(&buff,(char)get_rand(65,91));
+        }
+        str_copy(b+i,buff);
+        str_erase(&buff,0,str_len(buff));
+    }
+    str_del(buff);
+    printf("unsorted data\n");
+    for(int i=0;i<ptrarr_len_char(b);i++){
+        printf("%s\n",b[i]);
+    }
+    printf("\n");
+    return b;
+}
+
 char ** get_io_data()
 {
     char ** res = ptrarr_init_char(1);
@@ -904,15 +937,16 @@ char ** get_io_data()
     char buff;
     while((buff=getchar())!=EOF){
         if(buff=='\n'){
-            if(str_len(res[ptrarr_len_char(res)-1])==0){
-                ptrarr_pob_char(&res);
-                break;
-            }
+            // if(str_len(res[ptrarr_len_char(res)-1])==0){
+            //    ptrarr_pob_char(&res);
+            //    break;
+            // }
             ptrarr_pub_char(&res,str_init(0));
         }else{
             str_pub(res+ptrarr_len_char(res)-1,buff);
         }
     }
+    ptrarr_pob_char(&res);
     return res;
 }
 
@@ -933,32 +967,18 @@ char ** get_file_data()
             str_pub(res+ptrarr_len_char(res)-1,buff);
         }
     }
+    fclose(file);
     return res;
 }
 
-void sort_quick_str(char ** a, int left, int right)
+void sort_bubble_str(char ** a)
 {
-    int pivot=(int)a[(left+right)/2][0],l=left,r=right;
-    while(l<=r){
-        while((int)a[l][0]<pivot){
-            l++;
-        }
-        while((int)a[r][0]>pivot){
-            r--;
-        }
-        if(l<=r){
-            ptrarr_swap_char(a,l,r);
-            if(l!=r){
+    for(int i=0;i<ptrarr_len_char(a);i++){
+        for(int j=0;j<ptrarr_len_char(a)-i-1;j++){
+            if(strcmp(a[j],a[j+1])>0){
+                ptrarr_swap_char(a,j,j+1);
             }
-            l++;
-            r--;
         }
-    }
-    if(left<r){
-        sort_quick_str(a,left,r);
-    }
-    if(l<right){
-        sort_quick_str(a,l,right);
     }
 }
 
@@ -968,12 +988,13 @@ void print_subarrays(char ** ptrarr){
     for(int i=0;i<ptrarr_len_char(ptrarr);i++){
         count[str_find(alph,toupper(ptrarr[i][0]),1)]++;
     }
-    // for(int i=0;i<str_len(alph);i++){
-    //     if(count[i]!=0){
+    double avg = ptrarr_len_char(ptrarr)/4.0;
+    // for(int i=0;i<arr_len_int(count);i++){
+    //     if(count[i]!=0 || 1){
     //         printf("%c %d\n",alph[i], count[i]);
     //     }
     // }
-    double avg = ptrarr_len_char(ptrarr)/4.0;
+    // printf("%f\n",avg);
     int sum,l,r=-1;
     for(int i=0;i<4;i++){
         sum=0;
@@ -987,8 +1008,11 @@ void print_subarrays(char ** ptrarr){
         if(((double)(sum)-avg)>(avg-(double)sum+(double)count[r])){
             sum-=count[r];
             r--;
+            while(count[r]==0){
+                r--;
+            }
         }
-        printf("%c-%c %d\n",alph[l],alph[r],sum);
+        printf("%c-%c %d\n",alph[l],i==3?alph[25]:alph[r],sum);
     }
     str_del(alph);
     arr_del_int(count);
