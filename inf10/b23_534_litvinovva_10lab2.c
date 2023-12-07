@@ -11,6 +11,10 @@
 /*                       https://github.com/vSEK1RO                           */
 /*                                                                            */
 //#endclude "../clib/src/title.h"
+/************************************ TASK ************************************/
+/*                                                                            */
+/*                      Performs a merge sort on an array                     */
+/*                                                                            */
 /******************************* INCLUDES START *******************************/
 
 //#include "../clib/src/array.h"

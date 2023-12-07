@@ -11,6 +11,11 @@
 /*                       https://github.com/vSEK1RO                           */
 /*                                                                            */
 //#endclude "../clib/src/title.h"
+/************************************ Task ************************************/
+/*                                                                            */
+/*                            Works with matrices.                            */
+/*             Calculates the value of a matrix "A*A^T + (A*B)^2"             */
+/*                                                                            */
 /******************************* INCLUDES START *******************************/
 
 #include <inttypes.h>
@@ -948,7 +953,7 @@ void PTRARR_FUNC(PTRARR_TYPE,reverse)(PTRARR_TYPE ** a)
 
 /********************************* CODE START *********************************/
 #define DEBUG 1
-#define INPUT_TYPE 1 //0 - io, 1 - rand, 2 - file
+#define INPUT_TYPE 2 //0 - io, 1 - rand, 2 - file
 #define MTRX_NULL_PRINT -8
 #define MTRX_NULL_TRANSPOSE -7
 #define MTRX_NULL_SUM -1

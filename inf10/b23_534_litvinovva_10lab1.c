@@ -420,8 +420,9 @@ void sort_quick_int_cnt(int * a, int left, int right, int * cntAssign, int * cnt
             arr_swap_int(a,l,r);
             if(l!=r){
                 arr_print_int(a);
-                *cntAssign+=3;
+               
             }
+            *cntAssign+=3;
             l++;
             r--;
         }

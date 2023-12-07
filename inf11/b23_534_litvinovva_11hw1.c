@@ -11,6 +11,12 @@
 /*                       https://github.com/vSEK1RO                           */
 /*                                                                            */
 //#endclude "../clib/src/title.h"
+/************************************ TASK ************************************/
+/*                                                                            */
+/*                    Performs string sorting using strcmp.                   */
+/*                  Splits strings into 4 string subarrays,                   */
+/*                      which have the same first letter.                     */
+/*                                                                            */
 /******************************* INCLUDES START *******************************/
 
 #include <stdio.h>
@@ -871,6 +877,9 @@ void ARR_FUNC(ARR_TYPE,reverse)(ARR_TYPE * a)
 
 /********************************* CODE START *********************************/
 
+#define DEBUG 0
+#define INPUT_TYPE 0 //0 - io, 1 - rand, 2 - file
+
 int get_rand(int l, int r);
 char ** get_rand_data();
 char ** get_io_data();
@@ -883,9 +892,15 @@ int main()
     srand(time(NULL));
     //инициализация
     char ** strings;
-    //strings = get_rand_data();
-    //strings = get_file_data();
+    #if INPUT_TYPE == 1
+    strings = get_rand_data();
+    #endif
+    #if INPUT_TYPE == 2
+    strings = get_file_data();
+    #endif
+    #if INPUT_TYPE == 0
     strings = get_io_data();
+    #endif
     //сортировка и вывод
     sort_bubble_str(strings);
     for(int i=0;i<ptrarr_len_char(strings);i++){
@@ -989,12 +1004,14 @@ void print_subarrays(char ** ptrarr){
         count[str_find(alph,toupper(ptrarr[i][0]),1)]++;
     }
     double avg = ptrarr_len_char(ptrarr)/4.0;
-    // for(int i=0;i<arr_len_int(count);i++){
-    //     if(count[i]!=0 || 1){
-    //         printf("%c %d\n",alph[i], count[i]);
-    //     }
-    // }
-    // printf("%f\n",avg);
+    #if DEBUG == 1
+    for(int i=0;i<arr_len_int(count);i++){
+        if(count[i]!=0){
+            printf("%c %d\n",alph[i], count[i]);
+        }
+    }
+    printf("%f\n",avg);
+    #endif
     int sum,l,r=-1;
     for(int i=0;i<4;i++){
         sum=0;
@@ -1002,9 +1019,7 @@ void print_subarrays(char ** ptrarr){
         while((double)(sum)<avg && r!=str_len(alph)-1){
             r++;
             sum+=count[r];
-            //printf("%d %d %d\n",i,sum,r,avg);
         }
-        //printf("%d %f %f\n",i,((double)(sum)-avg),(avg-(double)sum+(double)count[r]));
         if(((double)(sum)-avg)>(avg-(double)sum+(double)count[r])){
             sum-=count[r];
             r--;
