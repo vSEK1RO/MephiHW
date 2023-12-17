@@ -1377,11 +1377,13 @@ void PTRARR_FUNC(PTRARR_TYPE,reverse)(PTRARR_TYPE ** a)
 #include <ctype.h>
 #include <time.h>
 
-// 4
+// 6
 // Frolov Sergei Samara Sadovaya 34 87 Physics 92
 // Popov Aleksandr Moscow Tverskaya 25 9 Biology 89
 // Smirnov Nikolay Kazan Pushkina 19 38 History 95
 // Bogdanov Ivan Moscow Pokrovka 12 46 Physics 94
+// BBBBogdanov Ivan Moscow Pokrovka 12 46 History 60
+// AAABogdanov Ivan Kazan Pokrovka 12 46 Physics 94
 /********************************* CODE START *********************************/
 
 #define DEBUG 0
