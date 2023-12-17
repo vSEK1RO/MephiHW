@@ -23,6 +23,8 @@
 #include <time.h>
 
 // 42 7 23 19 5 80 74 6 n
+// 19
+// 38
 /********************************* CODE START *********************************/
 
 typedef struct DList{
@@ -40,22 +42,34 @@ void dlist_pop_front(DList ** begin, DList ** end);
 void dlist_del(DList ** begin, DList ** end);
 void dlist_rand(DList ** begin, DList ** end, int n, int a, int b);
 int dlist_sum(DList ** begin);
+//functions for 14hw1:
+DList * dlist_find(DList ** begin, DList ** end, int n);
+void dlist_ins_after(DList ** begin, DList ** end, DList * q, int n);
+void dlist_erase(DList ** begin, DList ** end, DList * q);
 
 int main(){
     srand(time(NULL));
     DList * dlb = NULL;
     DList * dle = NULL;
-    char buff[256];
+    char buff[256]; 
     while(strcmp(buff,"n")!=0){
         scanf("%s",buff);
         if(strcmp(buff,"n")!=0){
-            dlist_push_back(&dlb,&dle,atoi(buff));
+            dlist_push_front(&dlb,&dle,atoi(buff));
         }
     }
-    dlist_pop_front(&dlb,&dle);
-    dlist_pop_front(&dlb,&dle);
-    dlist_print(&dlb);
-    printf("%d\n",dlist_sum(&dlb));
+    int a,b;
+    scanf("%d %d",&a,&b);
+    DList * lf = dlist_find(&dlb,&dle,a);
+    if(lf->data==a){
+        dlist_ins_after(&dlb,&dle,lf,b);
+        dlist_print(&dlb);
+        dlist_erase(&dlb,&dle,lf);
+        dlist_print(&dlb);
+    }else{
+        dlist_print(&dlb);
+        dlist_print(&dlb);
+    }
 }
 
 /**************************** IMPLEMENTATIONS START ***************************/
@@ -171,6 +185,62 @@ int dlist_sum(DList ** begin)
         sum+=b->data;
     }
     return sum;
+}
+
+DList * dlist_find(DList ** begin, DList ** end, int n)
+{
+    DList * b = *begin;
+    while(b->data!=n){
+        b=b->next;
+    }
+    return b;
+}
+
+void dlist_ins_after(DList ** begin, DList ** end, DList * q, int n)
+{
+    DList * b = *begin;
+    while(b!=q){
+        b=b->next;
+    }
+    DList * c = b->next;
+    b->next = (DList *)malloc(sizeof(DList));
+    if(c!=NULL){
+        c->prev = b->next;
+        b->next->next=c;
+    }else{
+        b->next->next=NULL;
+    }
+    b->next->prev=b;
+    b->next->data=n;
+}
+
+void dlist_erase(DList ** begin, DList ** end, DList * q)
+{
+    DList * b = *begin;
+    while(b!=q){
+        b=b->next;
+    }
+    if(b->next==NULL || b->prev==NULL){
+        if(b->next==NULL && b->prev!=NULL){
+            b->prev->next=NULL;
+            *end = b->prev;
+            free(b);
+        }
+        if(b->next!=NULL && b->prev==NULL){
+            b->next->prev=NULL;
+            *begin = b->next;
+            free(b);
+        }
+        if(b->next==NULL && b->prev==NULL){
+            b->prev->next=NULL;
+            *end = NULL;
+            *begin = NULL;
+            free(b);
+        }
+    }else{
+        b->next->prev=b->prev;
+        b->prev->next=b->next;
+    }
 }
 
 /********************************* PROGRAM END ********************************/
