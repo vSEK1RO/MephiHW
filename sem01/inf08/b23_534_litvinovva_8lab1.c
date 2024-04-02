@@ -1,16 +1,16 @@
-//#include "../clib/src/title.h"
-/*                          _      _       __   _        _       
-//  _ __ ___    ___  _ __  | |__  (_)     / /  (_)  ___ (_) ___  
-// | '_ ` _ \  / _ \| '_ \ | '_ \ | |    / /   | | / __|| |/ __| 
-// | | | | | ||  __/| |_) || | | || |   / /    | || (__ | |\__ \ 
-// |_| |_| |_| \___|| .__/ |_| |_||_|  /_/     |_| \___||_||___/ 
-//                  |_|                                          
-//
-//              Created by Vlad Litvinov b23-534
-//                 https://github.com/vSEK1RO
-*/
-//#endclude "../clib/src/title.h"
-#include "../clib/src/array.h"
+//#include "../../clib/src/title.h"
+/*                                _      _       __   _        _              */
+/*        _ __ ___    ___  _ __  | |__  (_)     / /  (_)  ___ (_) ___         */
+/*       | '_ ` _ \  / _ \| '_ \ | '_ \ | |    / /   | | / __|| |/ __|        */
+/*       | | | | | ||  __/| |_) || | | || |   / /    | || (__ | |\__ \        */
+/*       |_| |_| |_| \___|| .__/ |_| |_||_|  /_/     |_| \___||_||___/        */
+/*                        |_|                                                 */
+/*                                                                            */
+/*                    Created by Vlad Litvinov b23-534                        */
+/*                       https://github.com/vSEK1RO                           */
+/*                                                                            */
+//#endclude "../../clib/src/title.h"
+//#include "../../clib/src/array.h"
 #ifndef ARR_TYPE
 #define ARR_TYPE int
 #endif
@@ -22,6 +22,7 @@
 ARR_TYPE * ARR_FUNC(ARR_TYPE, init)(uint64_t len);
 uint64_t ARR_FUNC(ARR_TYPE, len)(ARR_TYPE * a);
 void ARR_FUNC(ARR_TYPE, del)(ARR_TYPE * a);
+void ARR_FUNC(ARR_TYPE, copy)(ARR_TYPE ** a, ARR_TYPE * b);
 ARR_TYPE ARR_FUNC(ARR_TYPE, max)(ARR_TYPE * a);
 ARR_TYPE ARR_FUNC(ARR_TYPE, min)(ARR_TYPE * a);
 uint8_t ARR_FUNC(ARR_TYPE, isEqual)(ARR_TYPE * a, ARR_TYPE * b);
@@ -85,6 +86,14 @@ void ARR_FUNC(ARR_TYPE,del)(ARR_TYPE * a)
         }
     }
     free((void *)(a-memlen));
+}
+
+void ARR_FUNC(ARR_TYPE,copy)(ARR_TYPE ** a, ARR_TYPE * b)
+{
+    *a = ARR_FUNC(ARR_TYPE,init)(ARR_FUNC(ARR_TYPE,len)(b));
+    for(uint64_t i=0;i<ARR_FUNC(ARR_TYPE,len)(b);i++){
+        (*a)[i]=b[i];
+    }
 }
 
 ARR_TYPE ARR_FUNC(ARR_TYPE,max)(ARR_TYPE * a)
@@ -185,11 +194,14 @@ uint64_t ARR_FUNC(ARR_TYPE,findArr)(ARR_TYPE * a, ARR_TYPE * b, uint64_t entry)
 {
     entry%=ARR_FUNC(ARR_TYPE,len)(a)+1;
     uint64_t i=-1;
+    ARR_TYPE * c;
     while(entry && i!=(ARR_FUNC(ARR_TYPE,len)(a)-ARR_FUNC(ARR_TYPE,len)(b))){
         i++;
-        if(ARR_FUNC(ARR_TYPE,isEqual)(ARR_FUNC(ARR_TYPE,substr)(a,i,i+ARR_FUNC(ARR_TYPE,len)(b)),b)){
+        c=ARR_FUNC(ARR_TYPE,substr)(a,i,i+ARR_FUNC(ARR_TYPE,len)(b));
+        if(ARR_FUNC(ARR_TYPE,isEqual)(c,b)){
             entry--;
         }
+        ARR_FUNC(ARR_TYPE,del)(c);
     }
     return (entry!=0?-1:i);
 }
@@ -208,10 +220,13 @@ uint64_t ARR_FUNC(ARR_TYPE,count)(ARR_TYPE * a, ARR_TYPE n)
 uint64_t ARR_FUNC(ARR_TYPE,countArr)(ARR_TYPE * a, ARR_TYPE * b)
 {
     uint64_t c=0;
+    ARR_TYPE * d;
     for(uint64_t i=0;i<ARR_FUNC(ARR_TYPE,len)(a)-ARR_FUNC(ARR_TYPE,len)(b);i++){
-        if(ARR_FUNC(ARR_TYPE,isEqual)(ARR_FUNC(ARR_TYPE,substr)(a,i,i+ARR_FUNC(ARR_TYPE,len)(b)),b)){
+        d=ARR_FUNC(ARR_TYPE,substr)(a,i,i+ARR_FUNC(ARR_TYPE,len)(b));
+        if(ARR_FUNC(ARR_TYPE,isEqual)(d,b)){
             c++;
         }
+        ARR_FUNC(ARR_TYPE,del)(d);
     }
     return c;
 }
@@ -282,7 +297,14 @@ void ARR_FUNC(ARR_TYPE,ins)(ARR_TYPE ** a, ARR_TYPE n, uint64_t i)
 void ARR_FUNC(ARR_TYPE,insArr)(ARR_TYPE ** a, ARR_TYPE * b, uint64_t i)
 {
     i%=ARR_FUNC(ARR_TYPE,len)(*a)+1;
-    *a=ARR_FUNC(ARR_TYPE,concat)(ARR_FUNC(ARR_TYPE,concat)(ARR_FUNC(ARR_TYPE,substr)(*a,0,i),b),ARR_FUNC(ARR_TYPE,substr)(*a,i,ARR_FUNC(ARR_TYPE,len)(*a)));
+    ARR_TYPE * c, * d, * e;
+    c=ARR_FUNC(ARR_TYPE,substr)(*a,0,i);
+    d=ARR_FUNC(ARR_TYPE,concat)(c,b);
+    e=ARR_FUNC(ARR_TYPE,substr)(*a,i,ARR_FUNC(ARR_TYPE,len)(*a));
+    *a=ARR_FUNC(ARR_TYPE,concat)(d,e);
+    ARR_FUNC(ARR_TYPE,del)(c);
+    ARR_FUNC(ARR_TYPE,del)(d);
+    ARR_FUNC(ARR_TYPE,del)(e);
 }
 
 void ARR_FUNC(ARR_TYPE,repl)(ARR_TYPE ** a, ARR_TYPE n, uint64_t i1, uint64_t i2)
@@ -312,7 +334,7 @@ void ARR_FUNC(ARR_TYPE,reverse)(ARR_TYPE * a)
 #undef ARR_FUNC
 #undef ARR_TEMPLATE
 #undef ARR_TYPE
-//#endclude "../clib/src/array.h"
+//#endclude "../../clib/src/array.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
