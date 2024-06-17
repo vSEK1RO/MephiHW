@@ -2,17 +2,32 @@
 #ifndef SEQUENCE_HPP
 #define SEQUENCE_HPP
 
-namespace cppl{
+#include <cstdint>
 
-class Seq{
-public:
-    
-    virtual ~Seq();
+namespace cppl
+{
+    template <typename T>
+    class iter;
 
-protected:
+    template <typename T>
+    class seq
+    {
+    public:
+        // Getters
+        virtual uint64_t size() = 0;
 
-} //class Seq
+        // Operators
+        virtual seq<T> &operator=(const seq<T> &) = 0;
+        virtual cppl::iter<T> &get(uint64_t) = 0;
+        virtual bool &operator==(const seq<T> &) = 0;
+        virtual T &operator[](uint64_t) = 0;
 
-} //namespace cppl
+        // Destructor
+        ~seq() = default;
+    private:
+        uint64_t _size;
+        uint64_t _mSize;
+    };
+}
 
-#endif //SEQUENCE_HPP
+#endif

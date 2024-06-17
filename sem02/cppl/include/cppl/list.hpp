@@ -2,19 +2,35 @@
 #ifndef LIST_HPP
 #define LIST_HPP
 
+#include <cstdint>
+
 #include <cppl/seq>
 
-namespace cppl{
+namespace cppl
+{
+    template <typename T>
+    class list : public seq<T>
+    {
+    public:
+        // Constructors
+        list(uint64_t);
 
-class List: Seq{
-public:
-    List
-    ~List();
+        // Getters
+        virtual uint64_t size() override;
 
-protected:
+        // Operators
+        list<T> &operator=(const list<T> &) override;
+        cppl::iter<T> &get(uint64_t) override;
+        bool &operator==(const list<T> &) override;
+        T &operator[](uint64_t) override;
 
-} //class List
+        // Destructor
+        ~list();
 
-} //namespace cppl
+    private:
+        
+    };
 
-#endif //LIST_HPP
+}
+
+#endif
