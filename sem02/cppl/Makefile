@@ -16,7 +16,7 @@ LIBDIR = lib
 TESTDIR = test
 DIRS = ${OBJDIR} ${LIBDIR} ${BINDIR}
 
-build: # ${DIRS} ${LIBDIR}/lib${LIB}.a ${BINDIR}/lib${LIB}.so
+# build: ${DIRS} ${LIBDIR}/lib${LIB}.a ${BINDIR}/lib${LIB}.so
 
 # ${DIRS}:
 # 	mkdir $@
@@ -41,3 +41,5 @@ clean:
 	rm ${LIBDIR}/*.a
 	rm ${BINDIR}/*.so
 	rm */*.exe
+
+build:

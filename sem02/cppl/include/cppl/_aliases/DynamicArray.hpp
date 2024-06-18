@@ -10,7 +10,7 @@ namespace cppl
     class DynamicArray
     {
     public:
-        DynamicArray(T *items, uint64_t count);
+        DynamicArray(T *items, uint64_t count)
         DynamicArray();
         DynamicArray(uint64_t size, T &nullValue);
         DynamicArray(const DynamicArray<T> &arr);
@@ -27,5 +27,7 @@ namespace cppl
         uint64_t size;
     };
 }
+
+#include <cppl/_impl/DynamicArray.hpp>
 
 #endif
