@@ -15,24 +15,31 @@ namespace cppl
     public:
         ListSequence(T *items, uint64_t count);
         ListSequence();
-        ListSequence(uint64_t length, T &nullValue);
-        ListSequence(const LinkedList<T> &list);
+        ListSequence(uint64_t lenght);
+        ListSequence(uint64_t length, const T &nullValue);
+        ListSequence(const ListSequence<T> &list);
 
-        T &getFirst() override;
-        T &getLast() override;
-        T &get(uint64_t index) override;
-        ListSequence<T> &getSubsequence(uint64_t startIndex, uint64_t endIndex) override;
-        uint64_t getLenght() override;
+        T &getFirst() const override;
+        T &getLast() const override;
+        T &operator[](uint64_t index) const override;
+        ListSequence<T> &getSubsequence(uint64_t startIndex, uint64_t endIndex) const override;
+        uint64_t getLenght() const override;
 
-        void append(const T &item) override;
-        void prepend(const T &item) override;
-        void insertAt(const T &item, uint64_t index) override;
-        ListSequence<T> &concat(const ListSequence<T> &seq) override;
+        void append(const T &item) const override;
+        void prepend(const T &item) const override;
+        void insertAt(const T &item, uint64_t index) const override;
+        ListSequence<T> &operator+(const ListSequence<T> &seq) const override;
+
+        // Methods
+        bool isEqual(T *items, uint64_t count) const override;
+
+        // Operators
+        bool operator==(const ListSequence<T> &list) const override;
 
         ~ListSequence();
 
     private:
-        LinkedList<T> &items;
+        LinkedList<T> *items;
     };
 }
 

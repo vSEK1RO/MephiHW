@@ -4,7 +4,7 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Werror -O0 -g
 OBJS = array list iterator
-TESTS = DynamicArray LinkedList
+TESTS = ArraySequence DynamicArray LinkedList
 
 LIB = cppl
 

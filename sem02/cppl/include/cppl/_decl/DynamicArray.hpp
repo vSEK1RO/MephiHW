@@ -18,9 +18,6 @@ namespace cppl
 
         T &operator[](uint64_t index) const;
         uint64_t getSize();
-        uint64_t getMsize(){
-            return msize;
-        }
 
         void set(uint64_t index, const T &value);
         void resize(uint64_t newSize);

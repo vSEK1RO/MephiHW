@@ -1,2 +1,3 @@
 #include <cppl/_decl/ListSequence.hpp>
-#include <cppl/_decl/LinkedList.hpp>
+#include <cppl/_impl/ListSequence.hpp>
+#include <cppl/_impl/LinkedList.hpp>
