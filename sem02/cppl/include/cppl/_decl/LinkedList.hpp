@@ -28,6 +28,4 @@ namespace cppl
     };
 }
 
-#include <cppl/_impl/LinkedList.hpp>
-
 #endif

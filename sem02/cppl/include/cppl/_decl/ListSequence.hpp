@@ -5,7 +5,7 @@
 #include <cstdint>
 
 #include <cppl/seq>
-#include <cppl/LinkedList.hpp>
+#include <cppl/_decl/LinkedList.hpp>
 
 namespace cppl
 {

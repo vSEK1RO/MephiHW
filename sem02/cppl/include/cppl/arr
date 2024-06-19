@@ -1,1 +1,2 @@
-#include <cppl/_aliases/ArraySequence.hpp>
+#include <cppl/_decl/ArraySequence.hpp>
+#include <cppl/_impl/DynamicArray.hpp>

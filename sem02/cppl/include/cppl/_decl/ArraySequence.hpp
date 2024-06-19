@@ -5,7 +5,7 @@
 #include <cstdint>
 
 #include <cppl/seq>
-#include <cppl/DynamicArray.hpp>
+#include <cppl/_decl/DynamicArray.hpp>
 
 namespace cppl
 {

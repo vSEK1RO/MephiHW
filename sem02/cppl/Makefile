@@ -4,7 +4,7 @@
 CC = g++
 CFLAGS = -Wall -Wextra -Werror -O0 -g
 OBJS = array list iterator
-TESTS = iterator
+TESTS = DynamicArray LinkedList
 
 LIB = cppl
 
@@ -34,12 +34,9 @@ ${TESTDIR}: build ${patsubst %, ${TESTDIR}/%.exe, ${TESTS}}
 	${patsubst %, ./${TESTDIR}/%.exe;, ${TESTS}}
 
 ${TESTDIR}/%.exe: ${TESTDIR}/%.cpp
-	${CC} -o $@ $^ -I${INCDIR} -L${LIBDIR} ${-lt} ${CFLAGS} # -l${LIB}
+	${CC} -o $@ $^ -I${INCDIR} -L${LIBDIR} ${-lt} ${CFLAGS}
 
 clean:
-	rm ${OBJDIR}/*.o
-	rm ${LIBDIR}/*.a
-	rm ${BINDIR}/*.so
-	rm */*.exe
+	rm ${OBJDIR}/*.o ${LIBDIR}/*.a ${BINDIR}/*.so */*.exe
 
 build:
