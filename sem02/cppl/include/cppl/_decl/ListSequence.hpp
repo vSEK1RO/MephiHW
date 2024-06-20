@@ -28,13 +28,13 @@ namespace cppl
         void append(const T &item) override;
         void prepend(const T &item) override;
         void insertAt(const T &item, uint64_t index) override;
-        ListSequence<T> &operator+(const ListSequence<T> &seq) const override;
+        ListSequence<T> &operator+(const Sequence<T> &seq) const override;
 
         // Methods
         bool isEqual(T *items, uint64_t count) const override;
 
         // Operators
-        bool operator==(const ListSequence<T> &list) const override;
+        bool operator==(const Sequence<T> &list) const override;
 
         ~ListSequence();
 

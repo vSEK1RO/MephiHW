@@ -135,8 +135,8 @@ namespace cppl
                 }
                 else
                 {
-                    curr->prev = end;
                     curr->next = nullptr;
+                    curr->prev = this->end;
                     this->end->next = curr;
                     this->end = curr;
                 }
@@ -148,19 +148,22 @@ namespace cppl
             curr = this->end;
             while (this->size > newSize)
             {
-                if(this->size==1){
+                if (this->size == 1)
+                {
                     delete curr;
-                    this->begin=nullptr;
-                    this->end=nullptr;
-                }else{
+                    this->begin = nullptr;
+                    this->end = nullptr;
+                }
+                else
+                {
                     this->end = curr->prev;
                     delete curr;
                     curr = this->end;
                 }
                 this->size -= 1;
             }
-            if(this->end!=nullptr)
-                this->end->next=nullptr;
+            if (this->end != nullptr)
+                this->end->next = nullptr;
         }
     }
     template <typename T>
@@ -176,7 +179,7 @@ namespace cppl
                     curr = new LinkedListItem;
                 }
                 catch (const std::exception &e)
-                {   
+                {
                     throw e;
                     return;
                 }
@@ -202,19 +205,22 @@ namespace cppl
             curr = this->begin;
             while (this->size > newSize)
             {
-                if(this->size==1){
+                if (this->size == 1)
+                {
                     delete curr;
-                    this->begin=nullptr;
-                    this->end=nullptr;
-                }else{
+                    this->begin = nullptr;
+                    this->end = nullptr;
+                }
+                else
+                {
                     this->begin = curr->next;
                     delete curr;
                     curr = this->begin;
                 }
                 this->size -= 1;
             }
-            if(this->begin!=nullptr)
-                this->begin->prev=nullptr;
+            if (this->begin != nullptr)
+                this->begin->prev = nullptr;
         }
     }
     template <typename T>
