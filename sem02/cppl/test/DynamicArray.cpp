@@ -61,6 +61,15 @@ TEST(DynamicArray, resize_1e6_pub)
         arr.resize(arr.getSize() + 1);
     }
 }
+TEST(DynamicArray, operator_eq)
+{
+    int a[3] = {1, 2, 3};
+    DynamicArray<int> arr(a,3);
+    DynamicArray<int> brr;
+    brr = arr;
+    arr.resize(0);
+    EXPECT_FALSE(arr==brr);
+}
 
 int main(int argc, char **argv)
 {

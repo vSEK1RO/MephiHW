@@ -72,6 +72,15 @@ TEST(LinkedList, resizeRevert_1e6_pof){
         arr.resizeRevert(arr.getSize()-1);
     }
 }
+TEST(LinkedList, operator_eq)
+{
+    int a[3] = {1, 2, 3};
+    LinkedList<int> arr(a,3);
+    LinkedList<int> brr;
+    brr = arr;
+    arr.resize(0);
+    EXPECT_FALSE(arr==brr);
+}
 
 int main(int argc, char **argv)
 {

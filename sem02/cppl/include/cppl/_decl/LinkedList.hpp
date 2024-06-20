@@ -28,6 +28,7 @@ namespace cppl
 
         // Operators
         bool operator==(const LinkedList<T> &list) const;
+        void operator=(const LinkedList<T> &list);
 
         ~LinkedList();
 

@@ -27,6 +27,7 @@ namespace cppl
 
         // Operators
         bool operator==(const DynamicArray<T> &arr) const;
+        void operator=(const DynamicArray<T> &arr);
 
         ~DynamicArray();
 

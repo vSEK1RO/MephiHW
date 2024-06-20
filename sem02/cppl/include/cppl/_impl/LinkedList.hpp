@@ -256,6 +256,19 @@ namespace cppl
         return true;
     }
     template <typename T>
+    void LinkedList<T>::operator=(const LinkedList<T> &list)
+    {
+        this->resize(list.getSize());
+        LinkedListItem *curr = this->begin;
+        uint64_t i = 0;
+        while (curr != nullptr)
+        {
+            curr->item = list[i];
+            curr = curr->next;
+            i++;
+        }
+    }
+    template <typename T>
     LinkedList<T>::~LinkedList()
     {
         LinkedListItem *curr = this->begin, *next;

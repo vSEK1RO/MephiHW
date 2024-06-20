@@ -150,6 +150,15 @@ namespace cppl
         return true;
     }
     template <typename T>
+    void DynamicArray<T>::operator=(const DynamicArray<T> &arr)
+    {
+        this->resize(arr.getSize());
+        for (uint64_t i = 0; i < arr.getSize(); i++)
+        {
+            this->items[i] = arr[i];
+        }
+    }
+    template <typename T>
     DynamicArray<T>::~DynamicArray()
     {
         delete[] this->items;
