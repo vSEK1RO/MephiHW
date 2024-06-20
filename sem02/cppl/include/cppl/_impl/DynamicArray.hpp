@@ -63,7 +63,7 @@ namespace cppl
         return this->items[index];
     }
     template <typename T>
-    uint64_t DynamicArray<T>::getSize()
+    uint64_t DynamicArray<T>::getSize() const
     {
         return this->size;
     }

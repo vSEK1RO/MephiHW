@@ -12,19 +12,36 @@ namespace cppl
     public:
         LinkedList(T *items, uint64_t count);
         LinkedList();
-        LinkedList(uint64_t size, T &nullValue);
-        LinkedList(const DynamicArray<T> &arr);
+        LinkedList(uint64_t size);
+        LinkedList(uint64_t size, const T &nullValue);
+        LinkedList(const LinkedList<T> &list);
 
-        T &get(uint64_t index);
-        uint64_t getSize();
+        T &operator[](uint64_t index) const;
+        uint64_t getSize() const;
 
-        void set(uint64_t index, T &value);
+        void set(uint64_t index, const T &value);
         void resize(uint64_t newSize);
+        void resizeRevert(uint64_t newSize);
+
+        // Methods
+        bool isEqual(T *items, uint64_t count) const;
+
+        // Operators
+        bool operator==(const LinkedList<T> &list) const;
 
         ~LinkedList();
 
     private:
         uint64_t size;
+        class LinkedListItem
+        {
+        public:
+            T item;
+            LinkedListItem *next;
+            LinkedListItem *prev;
+        };
+        LinkedListItem *begin;
+        LinkedListItem *end;
     };
 }
 

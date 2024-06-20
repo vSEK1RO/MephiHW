@@ -17,7 +17,7 @@ namespace cppl
         DynamicArray(const DynamicArray<T> &arr);
 
         T &operator[](uint64_t index) const;
-        uint64_t getSize();
+        uint64_t getSize() const;
 
         void set(uint64_t index, const T &value);
         void resize(uint64_t newSize);
