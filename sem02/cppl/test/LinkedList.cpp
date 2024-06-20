@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <cppl.hpp>
+#include <cppl/list>
 using namespace cppl;
 
 TEST(LinkedList, Constructor)

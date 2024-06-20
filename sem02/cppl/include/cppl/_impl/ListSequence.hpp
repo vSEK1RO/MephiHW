@@ -49,7 +49,7 @@ namespace cppl
         return (*this->items)[index];
     }
     template <typename T>
-    ListSequence<T> &ListSequence<T>::getSubseq(uint64_t startIndex, uint64_t endIndex) const
+    ListSequence<T> *ListSequence<T>::getSubseq(uint64_t startIndex, uint64_t endIndex) const
     {
         if ((*this->items).getSize() < endIndex || startIndex > endIndex)
             throw std::out_of_range("ArraySequence<T>::getSubseq");
@@ -58,7 +58,7 @@ namespace cppl
         {
             (*list)[i] = (*this->items)[i + startIndex];
         }
-        return *list;
+        return list;
     }
     template <typename T>
     uint64_t ListSequence<T>::getLenght() const
@@ -90,7 +90,7 @@ namespace cppl
         (*this->items)[index] = item;
     }
     template <typename T>
-    ListSequence<T> &ListSequence<T>::operator+(const Sequence<T> &seq) const
+    ListSequence<T> *ListSequence<T>::operator+(const Sequence<T> &seq) const
     {
         ListSequence<T> *list = new ListSequence<T>(this->items->getSize() + seq.getLenght());
         for (uint64_t i = 0; i < this->items->getSize(); i++)
@@ -101,7 +101,7 @@ namespace cppl
         {
             (*list)[i] = seq[i - this->items->getSize()];
         }
-        return *list;
+        return list;
     }
     template <typename T>
     bool ListSequence<T>::isEqual(T *items, uint64_t count) const
@@ -112,6 +112,16 @@ namespace cppl
             if ((*this->items)[i] != items[i])
                 return false;
         return true;
+    }
+    template <typename T>
+    ListSequence<T> *ListSequence<T>::copy() const
+    {
+        return new ListSequence<T>(*this);
+    }
+    template <typename T>
+    void ListSequence<T>::resize(uint64_t newSize)
+    {
+        this->items->resize(newSize);
     }
     template <typename T>
     bool ListSequence<T>::operator==(const Sequence<T> &list) const

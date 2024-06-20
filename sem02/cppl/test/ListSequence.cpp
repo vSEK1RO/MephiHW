@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <cstdio>
 
-#include <cppl.hpp>
+#include <cppl/list>
 using namespace cppl;
 
 TEST(ListSequence, Constructor)
@@ -37,15 +37,19 @@ TEST(ListSequence, operator_deref_by_index)
     ListSequence<int> arr(a, 3);
     EXPECT_EQ(arr[1], a[1]);
 }
-TEST(ListSequence, getSubsequence)
+TEST(ListSequence, getSubseq)
 {
     int a[] = {1, 2, 3};
     ListSequence<int>
         arr(a, 3),
         brr(a, 2),
         crr(a + 1, 2);
-    EXPECT_EQ(arr.getSubseq(0, 2), brr);
-    EXPECT_EQ(arr.getSubseq(1, 3), crr);
+    ListSequence<int> *a1 = arr.getSubseq(0, 2);
+    ListSequence<int> *a2 = arr.getSubseq(1, 3);
+    EXPECT_EQ(*a1, brr);
+    EXPECT_EQ(*a2, crr);
+    delete a1;
+    delete a2;
 }
 TEST(ListSequence, getLenght)
 {
@@ -88,8 +92,35 @@ TEST(ListSequence, insertAt)
     int a[] = {1, 2, 3};
     int b[] = {1, 3};
     ListSequence<int> arr(b, 2);
-    arr.insertAt(2,1);
-    EXPECT_TRUE(arr.isEqual(a,3));
+    arr.insertAt(2, 1);
+    EXPECT_TRUE(arr.isEqual(a, 3));
+}
+TEST(ListSequence, operator_plus)
+{
+    int a[] = {1, 2, 3};
+    int b[] = {1, 3};
+    ListSequence<int> arr(a, 3), brr(b, 2);
+    int c[] = {1, 2, 3, 1, 3};
+    ListSequence<int> *crr = arr + brr;
+    EXPECT_TRUE(crr->isEqual(c, 3));
+    delete crr;
+}
+TEST(ListSequence, copy)
+{
+    int a[] = {1, 2, 3};
+    ListSequence<int> arr(a, 3);
+    ListSequence<int> *brr = arr.copy();
+    arr[0] = 3;
+    EXPECT_FALSE(*brr == arr);
+    delete brr;
+}
+TEST(ListSequence, resize)
+{
+    int a[] = {1, 2, 3};
+    ListSequence<int> arr(a, 3);
+    arr.resize(2);
+    EXPECT_TRUE(arr.isEqual(a, 2));
+    EXPECT_EQ(arr.getLenght(), 2);
 }
 
 int main(int argc, char **argv)
