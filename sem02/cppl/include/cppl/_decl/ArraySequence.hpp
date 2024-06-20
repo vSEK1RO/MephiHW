@@ -22,19 +22,19 @@ namespace cppl
         T &getFirst() const override;
         T &getLast() const override;
         T &operator[](uint64_t index) const override;
-        ArraySequence<T> &getSubsequence(uint64_t startIndex, uint64_t endIndex) const override;
+        ArraySequence<T> &getSubseq(uint64_t startIndex, uint64_t endIndex) const override;
         uint64_t getLenght() const override;
 
         void append(const T &item) override;
         void prepend(const T &item) override;
         void insertAt(const T &item, uint64_t index) override;
-        ArraySequence<T> &operator+(const ArraySequence<T> &seq) const override;
+        ArraySequence<T> &operator+(const Sequence<T> &seq) const override;
 
         // Methods
         bool isEqual(T *items, uint64_t count) const override;
 
         // Operators
-        bool operator==(const ArraySequence<T> &arr) const override;
+        bool operator==(const Sequence<T> &arr) const override;
 
         ~ArraySequence();
 

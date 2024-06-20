@@ -43,20 +43,22 @@ TEST(DynamicArray, resize)
     DynamicArray<int> arr(a, 3);
     arr.resize(2);
     EXPECT_TRUE(arr.isEqual(a, 2));
-    EXPECT_EQ(arr.getSize(),2);
+    EXPECT_EQ(arr.getSize(), 2);
 }
 TEST(DynamicArray, resize_1e6_pob)
 {
     DynamicArray<int> arr(1e6);
-    for(uint64_t i=0;i<1e6;i++){
-        arr.resize(arr.getSize()-1);
+    for (uint64_t i = 0; i < 1e6; i++)
+    {
+        arr.resize(arr.getSize() - 1);
     }
 }
 TEST(DynamicArray, resize_1e6_pub)
 {
     DynamicArray<int> arr(0);
-    for(uint64_t i=0;i<1e6;i++){
-        arr.resize(arr.getSize()+1);
+    for (uint64_t i = 0; i < 1e6; i++)
+    {
+        arr.resize(arr.getSize() + 1);
     }
 }
 

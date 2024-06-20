@@ -133,7 +133,7 @@ namespace cppl
     bool DynamicArray<T>::isEqual(T *items, uint64_t count) const
     {
         if (this->size < count)
-            throw std::out_of_range("DynamicArray<T>::isEqual");
+            return false;
         for (uint64_t i = 0; i < count; i++)
             if (this->items[i] != items[i])
                 return false;

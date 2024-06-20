@@ -22,12 +22,12 @@ namespace cppl
         T &getFirst() const override;
         T &getLast() const override;
         T &operator[](uint64_t index) const override;
-        ListSequence<T> &getSubsequence(uint64_t startIndex, uint64_t endIndex) const override;
+        ListSequence<T> &getSubseq(uint64_t startIndex, uint64_t endIndex) const override;
         uint64_t getLenght() const override;
 
-        void append(const T &item) const override;
-        void prepend(const T &item) const override;
-        void insertAt(const T &item, uint64_t index) const override;
+        void append(const T &item) override;
+        void prepend(const T &item) override;
+        void insertAt(const T &item, uint64_t index) override;
         ListSequence<T> &operator+(const ListSequence<T> &seq) const override;
 
         // Methods
