@@ -79,48 +79,32 @@ namespace cppl
     {
         if (newSize <= this->msize / 2 || newSize > this->msize)
         {
-            T *buff = this->items;
-            uint64_t i;
+            T *buff;
+            uint64_t i, newMsize;
             if (newSize > this->msize / 4 && newSize <= this->msize / 2)
             {
-                try
-                {
-                    buff = new T[msize / 2];
-                }
-                catch (const std::exception &e)
-                {
-                    throw e;
-                    return;
-                }
-                this->msize /= 2;
+                newMsize = this->msize / 2;
             }
             else if (newSize > this->msize && newSize <= this->msize * 2)
             {
-                try
-                {
-                    buff = new T[msize * 2];
-                }
-                catch (const std::exception &e)
-                {
-                    throw e;
-                    return;
-                }
-                this->msize *= 2;
+                newMsize = this->msize * 2;
             }
             else if (newSize <= this->msize / 4 || newSize > this->msize * 2)
             {
-                try
-                {
-                    buff = new T[newSize];
-                }
-                catch (const std::exception &e)
-                {
-                    throw e;
-                    return;
-                }
-                this->msize = newSize;
+                newMsize = newSize;
             }
-            for (i = 0; i < newSize; i++)
+            this->msize = newMsize;
+            try
+            {
+                buff = new T[newMsize];
+            }
+            catch (const std::exception &e)
+            {
+                throw e;
+                return;
+            }
+            uint64_t readSize = newMsize < this->size ? newMsize : this->size;
+            for (i = 0; i < readSize; i++)
             {
                 buff[i] = this->items[i];
             }
