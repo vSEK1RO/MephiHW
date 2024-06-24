@@ -9,7 +9,7 @@
 namespace cppl
 {
     template <typename T>
-    ArraySequence<T>::ArraySequence(T *items, uint64_t count)
+    ArraySequence<T>::ArraySequence(const T *items, uint64_t count)
     {
         this->items = new DynamicArray<T>(items, count);
     }

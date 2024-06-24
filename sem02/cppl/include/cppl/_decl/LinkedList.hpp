@@ -10,7 +10,7 @@ namespace cppl
     class LinkedList
     {
     public:
-        LinkedList(T *items, uint64_t count);
+        LinkedList(const T *items, uint64_t count);
         LinkedList();
         LinkedList(uint64_t size);
         LinkedList(uint64_t size, const T &nullValue);

@@ -13,7 +13,7 @@ namespace cppl
     class ArraySequence : public Sequence<T>
     {
     public:
-        ArraySequence(T *items, uint64_t count);
+        ArraySequence(const T *items, uint64_t count);
         ArraySequence();
         ArraySequence(uint64_t lenght);
         ArraySequence(uint64_t length, const T &nullValue);

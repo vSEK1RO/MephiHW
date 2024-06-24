@@ -9,7 +9,7 @@
 namespace cppl
 {
     template <typename T>
-    DynamicArray<T>::DynamicArray(T *items, uint64_t count) : DynamicArray(count)
+    DynamicArray<T>::DynamicArray(const T *items, uint64_t count) : DynamicArray(count)
     {
         for (uint64_t i = 0; i < count; i++)
         {

@@ -13,7 +13,7 @@ namespace cppl
     class ListSequence : public Sequence<T>
     {
     public:
-        ListSequence(T *items, uint64_t count);
+        ListSequence(const T *items, uint64_t count);
         ListSequence();
         ListSequence(uint64_t lenght);
         ListSequence(uint64_t length, const T &nullValue);

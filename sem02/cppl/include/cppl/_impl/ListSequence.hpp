@@ -9,7 +9,7 @@
 namespace cppl
 {
     template <typename T>
-    ListSequence<T>::ListSequence(T *items, uint64_t count)
+    ListSequence<T>::ListSequence(const T *items, uint64_t count)
     {
         this->items = new LinkedList<T>(items, count);
     }

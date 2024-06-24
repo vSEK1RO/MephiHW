@@ -9,7 +9,7 @@
 namespace cppl
 {
     template <typename T>
-    LinkedList<T>::LinkedList(T *items, uint64_t count) : LinkedList(count)
+    LinkedList<T>::LinkedList(const T *items, uint64_t count) : LinkedList(count)
     {
         LinkedListItem *curr = this->begin;
         uint64_t i = 0;
