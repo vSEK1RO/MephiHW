@@ -52,7 +52,7 @@ namespace cppl
     ListSequence<T> *ListSequence<T>::getSubseq(uint64_t startIndex, uint64_t endIndex) const
     {
         if ((*this->items).getSize() < endIndex || startIndex > endIndex)
-            throw std::out_of_range("ArraySequence<T>::getSubseq");
+            throw std::out_of_range("ListSequence<T>::getSubseq");
         ListSequence<T> *list = new ListSequence<T>(endIndex - startIndex);
         for (uint64_t i = 0; i < list->getLenght(); i++)
         {
@@ -81,7 +81,7 @@ namespace cppl
     void ListSequence<T>::insertAt(const T &item, uint64_t index)
     {
         if (this->items->getSize() < index)
-            throw std::out_of_range("ArraySequence<T>::insertAt");
+            throw std::out_of_range("ListSequence<T>::insertAt");
         this->items->resize(this->items->getSize() + 1);
         for (uint64_t i = index; i < this->items->getSize() - 1; i++)
         {
@@ -122,6 +122,36 @@ namespace cppl
     void ListSequence<T>::resize(uint64_t newSize)
     {
         this->items->resize(newSize);
+    }
+    template <typename T>
+    ListSequence<T> *ListSequence<T>::map(T (*func)(const T &, uint64_t)) const
+    {
+        ListSequence<T> *seq = new ListSequence<T>(getLenght());
+        for(uint64_t i=0;i<getLenght();i++){
+            (*seq)[i] = func((*this)[i],i);
+        }
+        return seq;
+    }
+    template <typename T>
+    ListSequence<T> *ListSequence<T>::where(bool (*func)(const T &, uint64_t)) const
+    {
+        ListSequence<T> *seq = new ListSequence<T>();
+        for(uint64_t i=0;i<getLenght();i++){
+            if(func((*this)[i],i))
+            {
+                seq->append((*this)[i]);
+            }
+        }
+        return seq;
+    }
+    template <typename T>
+    T ListSequence<T>::reduce(T (*func)(const T &, const T &), const T &c) const
+    {
+        T res = func((*this)[0],c);
+        for(uint64_t i=1;i<getLenght();i++){
+            res = func((*this)[i],res);
+        }
+        return res;
     }
     template <typename T>
     bool ListSequence<T>::operator==(const Sequence<T> &list) const

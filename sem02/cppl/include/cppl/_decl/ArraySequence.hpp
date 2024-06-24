@@ -34,6 +34,9 @@ namespace cppl
         bool isEqual(T *items, uint64_t count) const override;
         ArraySequence<T> *copy() const override;
         void resize(uint64_t newSize) override;
+        ArraySequence<T> *map(T (*func)(const T &, uint64_t)) const override;
+        ArraySequence<T> *where(bool (*func)(const T &, uint64_t)) const override;
+        T reduce(T (*func)(const T &, const T &), const T &c) const override;
 
         // Operators
         bool operator==(const Sequence<T> &arr) const override;

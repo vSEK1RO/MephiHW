@@ -2,7 +2,7 @@
 -lt = -lgtest
 
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -O0 -g
+CFLAGS = -Wall -Wextra -Werror -Wno-unused-parameter -O0 -g
 OBJS =
 TESTS = ArraySequence ListSequence DynamicArray LinkedList\
 	UniquePointer
@@ -36,7 +36,7 @@ ${TESTDIR}: ${patsubst %, ${TESTDIR}/%.exe, ${TESTS}}
 	${patsubst %, ./${TESTDIR}/%.exe;, ${TESTS}}
 
 ${TESTDIR}/%.exe: ${TESTDIR}/%.cpp
-	${CC} -o $@ $^ -I${INCDIR} -L${LIBDIR} ${-lt} -l${LIB} ${CFLAGS}
+	${CC} -o $@ $^ -I${INCDIR} -L${LIBDIR} ${-lt} ${CFLAGS}
 
 clean:
 	rm ${OBJDIR}/*.o ${LIBDIR}/*.a ${BINDIR}/*.so */*.exe

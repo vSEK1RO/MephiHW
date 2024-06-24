@@ -27,6 +27,9 @@ namespace cppl
         virtual bool isEqual(T *, uint64_t) const = 0;
         virtual Sequence<T> *copy() const = 0;
         virtual void resize(uint64_t) = 0;
+        virtual Sequence<T> *map(T (*func)(const T &, uint64_t)) const = 0;
+        virtual Sequence<T> *where(bool (*func)(const T &, uint64_t)) const = 0;
+        virtual T reduce(T (*func)(const T &, const T &), const T &c) const = 0;
 
         // Operators
         virtual bool operator==(const Sequence<T> &) const = 0;

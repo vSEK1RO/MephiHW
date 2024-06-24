@@ -122,6 +122,41 @@ TEST(ListSequence, resize)
     EXPECT_TRUE(arr.isEqual(a, 2));
     EXPECT_EQ(arr.getLenght(), 2);
 }
+int map(const int &item, uint64_t index){
+    return item*2;
+}
+TEST(ListSequence, map)
+{
+    int a[] = {1, 2, 3};
+    ListSequence<int> arr(a,3);
+    ListSequence<int> *brr = arr.map(map);
+    int b[] = {2, 4, 6};
+    EXPECT_TRUE(brr->isEqual(b,3));
+    delete brr;
+}
+bool where(const int &item, uint64_t index)
+{
+    return index%2==0?true:false;
+}
+TEST(ListSequence, where)
+{
+    int a[] = {1, 2, 3};
+    ListSequence<int> arr(a,3);
+    ListSequence<int> *brr = arr.where(where);
+    int b[] = {1, 3};
+    EXPECT_TRUE(brr->isEqual(b,2));
+    delete brr;
+}
+int reduce(const int &a, const int &b)
+{
+    return a+b;
+}
+TEST(ListSequence, reduce)
+{
+    int a[] = {1, 2, 3};
+    ListSequence<int> arr(a,3);
+    EXPECT_EQ(arr.reduce(reduce,0),6);
+}
 
 int main(int argc, char **argv)
 {

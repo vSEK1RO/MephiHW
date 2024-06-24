@@ -128,6 +128,36 @@ namespace cppl
         this->items->resize(newSize);
     }
     template <typename T>
+    ArraySequence<T> *ArraySequence<T>::map(T (*func)(const T &, uint64_t)) const
+    {
+        ArraySequence<T> *arr = new ArraySequence<T>(getLenght());
+        for(uint64_t i=0;i<getLenght();i++){
+            (*arr)[i] = func((*this)[i],i);
+        }
+        return arr;
+    }
+    template <typename T>
+    ArraySequence<T> *ArraySequence<T>::where(bool (*func)(const T &, uint64_t)) const
+    {
+        ArraySequence<T> *arr = new ArraySequence<T>();
+        for(uint64_t i=0;i<getLenght();i++){
+            if(func((*this)[i],i))
+            {
+                arr->append((*this)[i]);
+            }
+        }
+        return arr;
+    }
+    template <typename T>
+    T ArraySequence<T>::reduce(T (*func)(const T &, const T &), const T &c) const
+    {
+        T res = func((*this)[0],c);
+        for(uint64_t i=1;i<getLenght();i++){
+            res = func((*this)[i],res);
+        }
+        return res;
+    }
+    template <typename T>
     bool ArraySequence<T>::operator==(const Sequence<T> &arr) const
     {
         if (this->items->getSize() != arr.getLenght())
