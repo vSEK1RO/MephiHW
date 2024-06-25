@@ -1,8 +1,16 @@
 #include <gtest/gtest.h>
 #include <cstdio>
 
-#include <cppl.hpp>
+#include <cppl/arr>
 using namespace cppl;
+
+void print(const ArraySequence<int> &arr)
+{
+    for(uint64_t i=0;i<arr.getLenght();i++){
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+}
 
 TEST(ArraySequence, Constructor)
 {
@@ -37,15 +45,19 @@ TEST(ArraySequence, operator_deref_by_index)
     ArraySequence<int> arr(a, 3);
     EXPECT_EQ(arr[1], a[1]);
 }
-TEST(ArraySequence, getSubsequence)
+TEST(ArraySequence, getSubseq)
 {
     int a[] = {1, 2, 3};
     ArraySequence<int>
         arr(a, 3),
         brr(a, 2),
         crr(a + 1, 2);
-    EXPECT_EQ(arr.getSubseq(0, 2), brr);
-    EXPECT_EQ(arr.getSubseq(1, 3), crr);
+    ArraySequence<int> *a1=arr.getSubseq(0, 2);
+    ArraySequence<int> *a2=arr.getSubseq(1,3);
+    EXPECT_EQ(*a1, brr);
+    EXPECT_EQ(*a2, crr);
+    delete a1;
+    delete a2;
 }
 TEST(ArraySequence, getLenght)
 {
@@ -82,6 +94,68 @@ TEST(ArraySequence, insertAt)
     ArraySequence<int> arr(b, 2);
     arr.insertAt(2,1);
     EXPECT_TRUE(arr.isEqual(a,3));
+}
+TEST(ArraySequence, operator_plus)
+{
+    int a[] = {1, 2, 3};
+    int b[] = {1, 3};
+    ArraySequence<int> arr(a,3), brr(b,2);
+    int c[] = {1, 2, 3, 1, 3};
+    ArraySequence<int> * crr = arr + brr;
+    EXPECT_TRUE(crr->isEqual(c,5));
+    delete crr;
+}
+TEST(ArraySequence, copy)
+{
+    int a[] = {1, 2, 3};
+    ArraySequence<int> arr(a, 3);
+    ArraySequence<int> *brr = arr.copy();
+    arr[0] = 3;
+    EXPECT_FALSE(*brr == arr);
+    delete brr;
+}
+TEST(ArraySequence, resize)
+{
+    int a[] = {1, 2, 3};
+    ArraySequence<int> arr(a, 3);
+    arr.resize(2);
+    EXPECT_TRUE(arr.isEqual(a, 2));
+    EXPECT_EQ(arr.getLenght(), 2);
+}
+int map(const int &item, uint64_t index){
+    return item*2;
+}
+TEST(ArraySequence, map)
+{
+    int a[] = {1, 2, 3};
+    ArraySequence<int> arr(a,3);
+    ArraySequence<int> *brr = arr.map(map);
+    int b[] = {2, 4, 6};
+    EXPECT_TRUE(brr->isEqual(b,3));
+    delete brr;
+}
+bool where(const int &item, uint64_t index)
+{
+    return index%2==0?true:false;
+}
+TEST(ArraySequence, where)
+{
+    int a[] = {1, 2, 3};
+    ArraySequence<int> arr(a,3);
+    ArraySequence<int> *brr = arr.where(where);
+    int b[] = {1, 3};
+    EXPECT_TRUE(brr->isEqual(b,2));
+    delete brr;
+}
+int reduce(const int &a, const int &b)
+{
+    return a+b;
+}
+TEST(ArraySequence, reduce)
+{
+    int a[] = {1, 2, 3};
+    ArraySequence<int> arr(a,3);
+    EXPECT_EQ(arr.reduce(reduce,0),6);
 }
 
 int main(int argc, char **argv)

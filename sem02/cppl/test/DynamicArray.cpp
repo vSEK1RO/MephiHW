@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <iostream>
 
-#include <cppl.hpp>
+#include <cppl/arr>
 using namespace cppl;
 
 TEST(DynamicArray, Constructor)
@@ -45,6 +45,14 @@ TEST(DynamicArray, resize)
     EXPECT_TRUE(arr.isEqual(a, 2));
     EXPECT_EQ(arr.getSize(), 2);
 }
+TEST(DynamicArray, resize_1e6_pub)
+{
+    DynamicArray<int> arr(0);
+    for (uint64_t i = 0; i < 1e6; i++)
+    {
+        arr.resize(arr.getSize() + 1);
+    }
+}
 TEST(DynamicArray, resize_1e6_pob)
 {
     DynamicArray<int> arr(1e6);
@@ -53,13 +61,14 @@ TEST(DynamicArray, resize_1e6_pob)
         arr.resize(arr.getSize() - 1);
     }
 }
-TEST(DynamicArray, resize_1e6_pub)
+TEST(DynamicArray, operator_eq)
 {
-    DynamicArray<int> arr(0);
-    for (uint64_t i = 0; i < 1e6; i++)
-    {
-        arr.resize(arr.getSize() + 1);
-    }
+    int a[3] = {1, 2, 3};
+    DynamicArray<int> arr(a,3);
+    DynamicArray<int> brr;
+    brr = arr;
+    arr.resize(0);
+    EXPECT_FALSE(arr==brr);
 }
 
 int main(int argc, char **argv)

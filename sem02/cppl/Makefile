@@ -2,9 +2,11 @@
 -lt = -lgtest
 
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -O0 -g
-OBJS = array list iterator
-TESTS = ArraySequence ListSequence DynamicArray LinkedList
+CFLAGS = -Wall -Wextra -Werror -Wno-unused-parameter\
+	-fsanitize=address,undefined -O0 -g
+OBJS =
+TESTS = ArraySequence ListSequence DynamicArray LinkedList\
+	UniquePointer
 
 LIB = cppl
 
@@ -16,21 +18,22 @@ LIBDIR = lib
 TESTDIR = test
 DIRS = ${OBJDIR} ${LIBDIR} ${BINDIR}
 
-# build: ${DIRS} ${LIBDIR}/lib${LIB}.a ${BINDIR}/lib${LIB}.so
+ifneq (${OBJS},)
+build: ${DIRS} ${LIBDIR}/lib${LIB}.a ${BINDIR}/lib${LIB}.so
 
-# ${DIRS}:
-# 	mkdir $@
+${DIRS}:
+	mkdir $@
 
-# ${OBJDIR}/%.o: ${SRCDIR}/%.cpp ${INCDIR}/${LIB}/%.hpp
-# 	${CC} -o $@ -c $< -I${INCDIR} ${-l} ${CFLAGS}
+${OBJDIR}/%.o: ${SRCDIR}/%.cpp ${INCDIR}/${LIB}/%
+	${CC} -o $@ -c $< -I${INCDIR} ${-l} ${CFLAGS}
 
-# ${BINDIR}/lib${LIB}.so: ${patsubst %, ${OBJDIR}/%.o, ${OBJS}}
-# 	${CC} -shared -o $@ $^ 
+${BINDIR}/lib${LIB}.so: ${patsubst %, ${OBJDIR}/%.o, ${OBJS}}
+	${CC} -shared -o $@ $^ 
 
-# ${LIBDIR}/lib${LIB}.a: ${patsubst %, ${OBJDIR}/%.o, ${OBJS}}
-# 	ar rcs $@ $^
-
-${TESTDIR}: build ${patsubst %, ${TESTDIR}/%.exe, ${TESTS}}
+${LIBDIR}/lib${LIB}.a: ${patsubst %, ${OBJDIR}/%.o, ${OBJS}}
+	ar rcs $@ $^
+endif
+${TESTDIR}: ${patsubst %, ${TESTDIR}/%.exe, ${TESTS}}
 	${patsubst %, ./${TESTDIR}/%.exe;, ${TESTS}}
 
 ${TESTDIR}/%.exe: ${TESTDIR}/%.cpp
@@ -38,5 +41,3 @@ ${TESTDIR}/%.exe: ${TESTDIR}/%.cpp
 
 clean:
 	rm ${OBJDIR}/*.o ${LIBDIR}/*.a ${BINDIR}/*.so */*.exe
-
-build:

@@ -7,41 +7,62 @@
 namespace cppl
 {
     template <typename T>
-    class LinkedList
+    class LinkedListItem
     {
     public:
-        LinkedList(T *items, uint64_t count);
+        T item;
+        LinkedListItem *next;
+        LinkedListItem *prev;
+    };
+
+    template <typename T>
+    class ListSequence;
+
+    template <typename T>
+    class LinkedList
+    {
+    friend class ListSequence<T>;
+    public:
+        LinkedList(const T *items, uint64_t count);
         LinkedList();
-        LinkedList(uint64_t size);
-        LinkedList(uint64_t size, const T &nullValue);
         LinkedList(const LinkedList<T> &list);
 
-        T &operator[](uint64_t index) const;
+        // Const methods
         uint64_t getSize() const;
+        bool isEqual(const T *items, uint64_t count) const;
+        uint64_t find(const T &item, uint64_t entry) const;
+        uint64_t count(const T &item) const;
 
-        void set(uint64_t index, const T &value);
-        void resize(uint64_t newSize);
-        void resizeRevert(uint64_t newSize);
-
-        // Methods
-        bool isEqual(T *items, uint64_t count) const;
+        // Non const methods
+        void erase(uint64_t beginIndex, uint64_t endIndex);
+        void insertAt(const T &item, uint64_t index);
+        void rearr(uint64_t i1, uint64_t i2);
 
         // Operators
+        T &operator[](uint64_t index) const;
         bool operator==(const LinkedList<T> &list) const;
+        void operator=(const LinkedList<T> &list);
+
+        // Deprecated
+        LinkedList(uint64_t size);
+        LinkedList(uint64_t size, const T &nullValue);
+        void resize(uint64_t newSize);
+        void resizeRevert(uint64_t newSize);
+        void set(uint64_t index, const T &value);
 
         ~LinkedList();
 
     private:
         uint64_t size;
-        class LinkedListItem
-        {
-        public:
-            T item;
-            LinkedListItem *next;
-            LinkedListItem *prev;
-        };
-        LinkedListItem *begin;
-        LinkedListItem *end;
+        
+        LinkedListItem<T> *begin;
+        LinkedListItem<T> *end;
+
+        LinkedListItem<T> &getItem(uint64_t index) const;
+        static void shiftPtr(LinkedListItem<T> *&ptr, uint64_t count);
+        static void shiftPtrRevert(LinkedListItem<T> *&ptr, uint64_t count);
+        void shiftPtrErase(LinkedListItem<T> *&ptr, uint64_t count);
+        void shiftPtrRevertErase(LinkedListItem<T> *&ptr, uint64_t count);
     };
 }
 

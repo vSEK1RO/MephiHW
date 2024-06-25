@@ -9,7 +9,7 @@
 namespace cppl
 {
     template <typename T>
-    ArraySequence<T>::ArraySequence(T *items, uint64_t count)
+    ArraySequence<T>::ArraySequence(const T *items, uint64_t count)
     {
         this->items = new DynamicArray<T>(items, count);
     }
@@ -49,16 +49,16 @@ namespace cppl
         return (*this->items)[index];
     }
     template <typename T>
-    ArraySequence<T> &ArraySequence<T>::getSubseq(uint64_t startIndex, uint64_t endIndex) const
+    ArraySequence<T> *ArraySequence<T>::getSubseq(uint64_t beginIndex, uint64_t endIndex) const
     {
-        if (this->items->getSize() < endIndex || startIndex > endIndex)
+        if (this->items->getSize() < endIndex || beginIndex > endIndex)
             throw std::out_of_range("ArraySequence<T>::getSubseq");
-        ArraySequence<T> *arr = new ArraySequence<T>(endIndex - startIndex);
+        ArraySequence<T> *arr = new ArraySequence<T>(endIndex - beginIndex);
         for (uint64_t i = 0; i < arr->getLenght(); i++)
         {
-            (*arr)[i] = (*this->items)[i + startIndex];
+            (*arr)[i] = (*this->items)[i + beginIndex];
         }
-        return *arr;
+        return arr;
     }
     template <typename T>
     uint64_t ArraySequence<T>::getLenght() const
@@ -94,7 +94,7 @@ namespace cppl
         (*this->items)[index] = item;
     }
     template <typename T>
-    ArraySequence<T> &ArraySequence<T>::operator+(const Sequence<T> &seq) const
+    ArraySequence<T> *ArraySequence<T>::operator+(const Sequence<T> &seq) const
     {
         ArraySequence<T> *arr = new ArraySequence<T>(this->items->getSize() + seq.getLenght());
         for (uint64_t i = 0; i < this->items->getSize(); i++)
@@ -105,17 +105,52 @@ namespace cppl
         {
             (*arr)[i] = seq[i - this->items->getSize()];
         }
-        return *arr;
+        return arr;
     }
     template <typename T>
     bool ArraySequence<T>::isEqual(T *items, uint64_t count) const
     {
-        if (this->items->getSize() < count)
-            return false;
-        for (uint64_t i = 0; i < count; i++)
-            if ((*this->items)[i] != items[i])
-                return false;
-        return true;
+        return this->items->isEqual(items, count);
+    }
+    template <typename T>
+    ArraySequence<T> *ArraySequence<T>::copy() const
+    {
+        return new ArraySequence<T>(*this);
+    }
+    template <typename T>
+    void ArraySequence<T>::resize(uint64_t newSize)
+    {
+        this->items->resize(newSize);
+    }
+    template <typename T>
+    ArraySequence<T> *ArraySequence<T>::map(T (*func)(const T &, uint64_t)) const
+    {
+        ArraySequence<T> *arr = new ArraySequence<T>(getLenght());
+        for(uint64_t i=0;i<getLenght();i++){
+            (*arr)[i] = func((*this)[i],i);
+        }
+        return arr;
+    }
+    template <typename T>
+    ArraySequence<T> *ArraySequence<T>::where(bool (*func)(const T &, uint64_t)) const
+    {
+        ArraySequence<T> *arr = new ArraySequence<T>();
+        for(uint64_t i=0;i<getLenght();i++){
+            if(func((*this)[i],i))
+            {
+                arr->append((*this)[i]);
+            }
+        }
+        return arr;
+    }
+    template <typename T>
+    T ArraySequence<T>::reduce(T (*func)(const T &, const T &), const T &c) const
+    {
+        T res = func((*this)[0],c);
+        for(uint64_t i=1;i<getLenght();i++){
+            res = func((*this)[i],res);
+        }
+        return res;
     }
     template <typename T>
     bool ArraySequence<T>::operator==(const Sequence<T> &arr) const
