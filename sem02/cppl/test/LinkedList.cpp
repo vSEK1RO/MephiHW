@@ -18,6 +18,21 @@ TEST(LinkedList, Constructor)
     LinkedList<int> drr(arr);
     EXPECT_EQ(arr, drr);
 }
+TEST(LinkedList, erase)
+{
+    int a[] = {1, 2, 3};
+    LinkedList<int> arr(a, 3);
+    LinkedList<int> brr(arr), crr(arr), drr(arr);
+    arr.erase(0,2);
+    brr.erase(1,3);
+    crr.erase(1,2);
+    drr.erase(0,3);
+    int c[] = {1, 3};
+    EXPECT_TRUE(arr.isEqual(a+2,1));
+    EXPECT_TRUE(brr.isEqual(a,1));
+    EXPECT_TRUE(crr.isEqual(c,2));
+    EXPECT_TRUE(drr.isEqual(a,0));
+}
 TEST(LinkedList, operator_deref_by_index)
 {
     int a[] = {1, 2, 3};

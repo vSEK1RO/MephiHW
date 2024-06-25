@@ -2,7 +2,8 @@
 -lt = -lgtest
 
 CC = g++
-CFLAGS = -Wall -Wextra -Werror -Wno-unused-parameter -O0 -g
+CFLAGS = -Wall -Wextra -Werror -Wno-unused-parameter\
+	-fsanitize=address,undefined -O0 -g
 OBJS =
 TESTS = ArraySequence ListSequence DynamicArray LinkedList\
 	UniquePointer

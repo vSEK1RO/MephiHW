@@ -84,6 +84,62 @@ namespace cppl
         }
     }
     template <typename T>
+    void LinkedList<T>::erase(uint64_t startIndex, uint64_t endIndex)
+    {
+        if (startIndex > endIndex || startIndex > size || endIndex > size)
+            throw std::out_of_range("LinkedList<T>::erase");
+        LinkedListItem *startPtr, *endPtr;
+        bool mvbegin, mvend;
+        mvbegin = startIndex == 0;
+        mvend = endIndex == size;
+        if (startIndex < size - endIndex)
+        {
+            endPtr = begin;
+            shiftPtr(endPtr, startIndex);
+            startPtr = endPtr->prev;
+            shiftPtrErase(endPtr, endIndex - startIndex);
+            if (startPtr != nullptr)
+                startPtr->next = endPtr;
+            if (endPtr != nullptr)
+                endPtr->prev = startPtr;
+        }
+        else
+        {
+            startPtr = end;
+            shiftPtrRevert(startPtr, size - endIndex);
+            endPtr = startPtr->next;
+            shiftPtrRevertErase(startPtr, endIndex - startIndex);
+            if (endPtr != nullptr)
+                endPtr->prev = startPtr;
+            if (startPtr != nullptr)
+                startPtr->next = endPtr;
+        }
+        if (mvbegin)
+            begin = endPtr;
+        if (mvend)
+            end = startPtr;
+    }
+    // template <typename T>
+    // void LinkedList<T>::insertAt(uint64_t begin, uint64_t end)
+    // {
+
+    // }
+    // template <typename T>
+    // void LinkedList<T>::rearr(uint64_t begin, uint64_t end)
+    // {
+
+    // }
+    // template <typename T>
+    // uint64_t LinkedList<T>::find(const T& item, uint64_t ent)
+    // {
+
+    // }
+    // template <typename T>
+    // uint64_t LinkedList<T>::count(const T& item, uint64_t ent)
+    // {
+
+    // }
+    template <typename T>
     T &LinkedList<T>::operator[](uint64_t index) const
     {
         if (index >= this->size)
@@ -224,7 +280,7 @@ namespace cppl
         }
     }
     template <typename T>
-    bool LinkedList<T>::isEqual(T *items, uint64_t count) const
+    bool LinkedList<T>::isEqual(const T *items, uint64_t count) const
     {
         LinkedListItem *curr = this->begin;
         uint64_t i = 0;
@@ -277,6 +333,50 @@ namespace cppl
             next = curr->next;
             delete curr;
             curr = next;
+        }
+    }
+    template <typename T>
+    void LinkedList<T>::shiftPtr(LinkedListItem *&ptr, uint64_t count) const
+    {
+        for (uint64_t i = 0; i < count && ptr != nullptr; i++)
+        {
+            ptr = ptr->next;
+        }
+        if (ptr == nullptr)
+            throw std::out_of_range("LinkedList<T>::shiftPtr");
+    }
+    template <typename T>
+    void LinkedList<T>::shiftPtrRevert(LinkedListItem *&ptr, uint64_t count) const
+    {
+        for (uint64_t i = 0; i < count && ptr != nullptr; i++)
+        {
+            ptr = ptr->prev;
+        }
+        if (ptr == nullptr)
+            throw std::out_of_range("LinkedList<T>::shiftPtrRevert");
+    }
+    template <typename T>
+    void LinkedList<T>::shiftPtrErase(LinkedListItem *&ptr, uint64_t count)
+    {
+        LinkedListItem *buff;
+        for (uint64_t i = 0; i < count && ptr != nullptr; i++)
+        {
+            buff = ptr;
+            ptr = ptr->next;
+            delete buff;
+            size -= 1;
+        }
+    }
+    template <typename T>
+    void LinkedList<T>::shiftPtrRevertErase(LinkedListItem *&ptr, uint64_t count)
+    {
+        LinkedListItem *buff;
+        for (uint64_t i = 0; i < count && ptr != nullptr; i++)
+        {
+            buff = ptr;
+            ptr = ptr->prev;
+            delete buff;
+            size -= 1;
         }
     }
 }

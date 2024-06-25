@@ -114,7 +114,7 @@ namespace cppl
         this->size = newSize;
     }
     template <typename T>
-    bool DynamicArray<T>::isEqual(T *items, uint64_t count) const
+    bool DynamicArray<T>::isEqual(const T *items, uint64_t count) const
     {
         if (this->size < count)
             return false;
