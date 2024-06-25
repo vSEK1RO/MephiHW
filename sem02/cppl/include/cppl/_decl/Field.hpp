@@ -8,19 +8,20 @@ namespace cppl
     {
     public:
         Field();
-        Field(const &T data);
+        Field(const T &data);
 
         // default operator=
-        Field<T> *operator+(const Field<T> &item) const;
-        Field<T> *operator-() const;
-        Field<T> *operator-(const Field<T> &item) const;
-        Field<T> *operator*(const Field<T> &item) const;
-        Field<T> *operator/(const Field<T> &item) const;
+        Field<T> operator+(const Field<T> &item) const;
+        Field<T> operator-() const;
+        Field<T> operator-(const Field<T> &item) const;
+        Field<T> operator*(const Field<T> &item) const;
+        Field<T> operator/(const Field<T> &item) const;
         bool operator<(const Field<T> &item) const;
         bool operator>(const Field<T> &item) const;
         bool operator==(const Field<T> &item) const;
-        Field<T> *null() const;
-        Field<T> *neutral() const;
+        bool operator!=(const Field<T> &item) const;
+        Field<T> null() const;
+        Field<T> neutral() const;
 
         ~Field() = default;
     private:

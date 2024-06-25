@@ -1,3 +1,6 @@
+#ifndef FIELDS_DOUBLE_HPP
+#define FIELDS_DOUBLE_HPP
+
 #include <cppl/field>
 
 namespace cppl
@@ -5,36 +8,37 @@ namespace cppl
     template <>
     Field<double>::Field()
     {
-        data = 0;
+        data = 0.0;
     }
-    Field<double>::Field(const &double data)
+    template <>
+    Field<double>::Field(const double &data)
     {
         this->data = data;
     }
     template <>
-    Field<double> *Field<double>::operator+(const Field<double> &item) const
+    Field<double> Field<double>::operator+(const Field<double> &item) const
     {
-        return new Field<double>(data + item.data);
+        return Field<double>(data + item.data);
     }
     template <>
-    Field<double> *Field<double>::operator-() const
+    Field<double> Field<double>::operator-() const
     {
-        return new Field<double>(-data);
+        return Field<double>(-data);
     }
     template <>
-    Field<double> *Field<double>::operator-(const Field<double> &item) const
+    Field<double> Field<double>::operator-(const Field<double> &item) const
     {
-        return new Field<double>(data - item.data);
+        return Field<double>(data - item.data);
     }
     template <>
-    Field<double> *Field<double>::operator*(const Field<double> &item) const
+    Field<double> Field<double>::operator*(const Field<double> &item) const
     {
-        return new Field<double>(data * item.data);
+        return Field<double>(data * item.data);
     }
     template <>
-    Field<double> *Field<double>::operator/(const Field<double> &item) const
+    Field<double> Field<double>::operator/(const Field<double> &item) const
     {
-        return new Field<double>(data / item.data);
+        return Field<double>(data / item.data);
     }
     template <>
     bool Field<double>::operator<(const Field<double> &item) const
@@ -52,13 +56,20 @@ namespace cppl
         return data == item.data;
     }
     template <>
-    Field<double> *Field<double>::null() const
+    bool Field<double>::operator!=(const Field<double> &item) const
     {
-        return new Field<double>();
+        return data != item.data;
     }
     template <>
-    Field<double> *Field<double>::neutral() const
+    Field<double> Field<double>::null() const
     {
-        
+        return Field<double>();
+    }
+    template <>
+    Field<double> Field<double>::neutral() const
+    {
+        return Field<double>(1.0);   
     }
 }
+
+#endif
