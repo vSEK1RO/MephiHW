@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SEQUENCE_HPP
 #define SEQUENCE_HPP
 

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _IMPL_ARRAY_SEQUENCE_HPP
 #define _IMPL_ARRAY_SEQUENCE_HPP
 

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef LIST_SEQUENCE_HPP
 #define LIST_SEQUENCE_HPP
 
