@@ -35,15 +35,7 @@ namespace cppl
         LinkedListItem *curr;
         for (uint64_t i = 0; i < size; i++)
         {
-            try
-            {
-                curr = new LinkedListItem;
-            }
-            catch (const std::exception &e)
-            {
-                throw e;
-                return;
-            }
+            curr = new LinkedListItem;
             if (this->begin == nullptr)
             {
                 curr->prev = nullptr;
@@ -84,20 +76,20 @@ namespace cppl
         }
     }
     template <typename T>
-    void LinkedList<T>::erase(uint64_t startIndex, uint64_t endIndex)
+    void LinkedList<T>::erase(uint64_t beginIndex, uint64_t endIndex)
     {
-        if (startIndex > endIndex || startIndex > size || endIndex > size)
+        if (beginIndex > endIndex || beginIndex > size || endIndex > size)
             throw std::out_of_range("LinkedList<T>::erase");
         LinkedListItem *startPtr, *endPtr;
         bool mvbegin, mvend;
-        mvbegin = startIndex == 0;
+        mvbegin = beginIndex == 0;
         mvend = endIndex == size;
-        if (startIndex < size - endIndex)
+        if (beginIndex < size - endIndex)
         {
             endPtr = begin;
-            shiftPtr(endPtr, startIndex);
+            shiftPtr(endPtr, beginIndex);
             startPtr = endPtr->prev;
-            shiftPtrErase(endPtr, endIndex - startIndex);
+            shiftPtrErase(endPtr, endIndex - beginIndex);
             if (startPtr != nullptr)
                 startPtr->next = endPtr;
             if (endPtr != nullptr)
@@ -108,7 +100,7 @@ namespace cppl
             startPtr = end;
             shiftPtrRevert(startPtr, size - endIndex);
             endPtr = startPtr->next;
-            shiftPtrRevertErase(startPtr, endIndex - startIndex);
+            shiftPtrRevertErase(startPtr, endIndex - beginIndex);
             if (endPtr != nullptr)
                 endPtr->prev = startPtr;
             if (startPtr != nullptr)
@@ -119,11 +111,52 @@ namespace cppl
         if (mvend)
             end = startPtr;
     }
-    // template <typename T>
-    // void LinkedList<T>::insertAt(uint64_t begin, uint64_t end)
-    // {
-
-    // }
+    template <typename T>
+    void LinkedList<T>::insertAt(const T &item, uint64_t index)
+    {
+        if (index > size)
+            throw std::out_of_range("LinkedList<T>::insertAt");
+        LinkedListItem *curr, *buff;
+        if(index!=0 && index!=size){
+            if(index < size/2){
+                curr = begin;
+                shiftPtr(curr, index);
+                buff = curr->prev;
+                curr->prev = new LinkedListItem();
+                curr->prev->item = item;
+                curr->prev->next = curr;
+                curr->prev->prev = buff;
+                buff->next = curr->prev;
+            }else{
+                curr = end;
+                shiftPtrRevert(curr,size-index);
+                buff = curr->next;
+                curr->next = new LinkedListItem();
+                curr->next->item = item;
+                curr->next->prev = curr;
+                curr->next->next = buff;
+                buff->prev = curr->next;
+            }
+        }else if(index == 0 && index != size){
+            begin->prev = new LinkedListItem();
+            begin->prev->next = begin;
+            begin = begin->prev;
+            begin->prev = nullptr;
+            begin->item = item;
+        }else if(index == size && index != 0){
+            end->next = new LinkedListItem();
+            end->next->prev = end;
+            end = end->next;
+            end->next = nullptr;
+            end->item = item;
+        }else{
+            begin = new LinkedListItem();
+            end = begin;
+            begin->next = begin->prev = nullptr;
+            begin->item = item;
+        }
+        size+=1;
+    }
     // template <typename T>
     // void LinkedList<T>::rearr(uint64_t begin, uint64_t end)
     // {
@@ -173,15 +206,7 @@ namespace cppl
         {
             while (this->size < newSize)
             {
-                try
-                {
-                    curr = new LinkedListItem;
-                }
-                catch (const std::exception &e)
-                {
-                    throw e;
-                    return;
-                }
+                curr = new LinkedListItem;
                 if (this->begin == nullptr)
                 {
                     curr->prev = nullptr;
@@ -230,15 +255,7 @@ namespace cppl
         {
             while (this->size < newSize)
             {
-                try
-                {
-                    curr = new LinkedListItem;
-                }
-                catch (const std::exception &e)
-                {
-                    throw e;
-                    return;
-                }
+                curr = new LinkedListItem;
                 if (this->begin == nullptr)
                 {
                     curr->prev = nullptr;

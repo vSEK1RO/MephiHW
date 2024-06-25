@@ -19,8 +19,8 @@ namespace cppl
         bool isEqual(const T *items, uint64_t count) const;
 
         // Non const methods
-        void erase(uint64_t startIndex, uint64_t endIndex);
-        // void insertAt(const T &item, uint64_t index);
+        void erase(uint64_t beginIndex, uint64_t endIndex);
+        void insertAt(const T &item, uint64_t index);
         // void rearr(uint64_t i1, uint64_t i2);
         // uint64_t find(const T &item, uint64_t ent);
         // uint64_t count(const T &item, uint64_t ent)

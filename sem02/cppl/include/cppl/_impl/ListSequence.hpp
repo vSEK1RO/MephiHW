@@ -49,14 +49,14 @@ namespace cppl
         return (*this->items)[index];
     }
     template <typename T>
-    ListSequence<T> *ListSequence<T>::getSubseq(uint64_t startIndex, uint64_t endIndex) const
+    ListSequence<T> *ListSequence<T>::getSubseq(uint64_t beginIndex, uint64_t endIndex) const
     {
-        if ((*this->items).getSize() < endIndex || startIndex > endIndex)
+        if ((*this->items).getSize() < endIndex || beginIndex > endIndex)
             throw std::out_of_range("ListSequence<T>::getSubseq");
-        ListSequence<T> *list = new ListSequence<T>(endIndex - startIndex);
+        ListSequence<T> *list = new ListSequence<T>(endIndex - beginIndex);
         for (uint64_t i = 0; i < list->getLenght(); i++)
         {
-            (*list)[i] = (*this->items)[i + startIndex];
+            (*list)[i] = (*this->items)[i + beginIndex];
         }
         return list;
     }

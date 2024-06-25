@@ -22,7 +22,7 @@ namespace cppl
         // Const methods
         T &getFirst() const override;
         T &getLast() const override;
-        ListSequence<T> *getSubseq(uint64_t startIndex, uint64_t endIndex) const override;
+        ListSequence<T> *getSubseq(uint64_t beginIndex, uint64_t endIndex) const override;
         uint64_t getLenght() const override;
         ListSequence<T> *map(T (*func)(const T &, uint64_t)) const override;
         ListSequence<T> *where(bool (*func)(const T &, uint64_t)) const override;
