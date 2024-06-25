@@ -446,7 +446,7 @@ namespace cppl
         }
     }
     template <typename T>
-    void LinkedList<T>::shiftPtr(LinkedListItem<T> *&ptr, uint64_t count) const
+    void LinkedList<T>::shiftPtr(LinkedListItem<T> *&ptr, uint64_t count)
     {
         for (uint64_t i = 0; i < count && ptr != nullptr; i++)
         {
@@ -456,7 +456,7 @@ namespace cppl
             throw std::out_of_range("LinkedList<T>::shiftPtr");
     }
     template <typename T>
-    void LinkedList<T>::shiftPtrRevert(LinkedListItem<T> *&ptr, uint64_t count) const
+    void LinkedList<T>::shiftPtrRevert(LinkedListItem<T> *&ptr, uint64_t count)
     {
         for (uint64_t i = 0; i < count && ptr != nullptr; i++)
         {

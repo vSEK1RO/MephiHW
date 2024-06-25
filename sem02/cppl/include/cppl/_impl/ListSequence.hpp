@@ -16,102 +16,88 @@ namespace cppl
     template <typename T>
     ListSequence<T>::ListSequence()
     {
-        this->items = new LinkedList<T>();
+        items = new LinkedList<T>();
     }
     template <typename T>
     ListSequence<T>::ListSequence(uint64_t lenght)
     {
-        this->items = new LinkedList<T>(lenght);
+        items = new LinkedList<T>(lenght);
     }
     template <typename T>
     ListSequence<T>::ListSequence(uint64_t length, const T &nullValue)
     {
-        this->items = new LinkedList<T>(length, nullValue);
+        items = new LinkedList<T>(length, nullValue);
     }
     template <typename T>
     ListSequence<T>::ListSequence(const ListSequence<T> &list)
     {
-        this->items = new LinkedList<T>(*list.items);
+        items = new LinkedList<T>(*list.items);
     }
     template <typename T>
     T &ListSequence<T>::getFirst() const
     {
-        return (*this->items)[0];
+        return (*items)[0];
     }
     template <typename T>
     T &ListSequence<T>::getLast() const
     {
-        return (*this->items)[this->items->getSize() - 1];
+        return (*items)[items->getSize() - 1];
     }
     template <typename T>
     T &ListSequence<T>::operator[](uint64_t index) const
     {
-        return (*this->items)[index];
+        return (*items)[index];
     }
     template <typename T>
     ListSequence<T> *ListSequence<T>::getSubseq(uint64_t beginIndex, uint64_t endIndex) const
     {
-        if ((*this->items).getSize() < endIndex || beginIndex > endIndex)
+        if ((*items).getSize() < endIndex || beginIndex > endIndex)
             throw std::out_of_range("ListSequence<T>::getSubseq");
-        ListSequence<T> *list = new ListSequence<T>(endIndex - beginIndex);
-        for (uint64_t i = 0; i < list->getLenght(); i++)
+        ListSequence<T> *resSeq = new ListSequence<T>();
+        for (uint64_t i = 0; i < endIndex - beginIndex; i++)
         {
-            (*list)[i] = (*this->items)[i + beginIndex];
+            resSeq->append((*items)[i + beginIndex]);
         }
-        return list;
+        return resSeq;
     }
     template <typename T>
     uint64_t ListSequence<T>::getLenght() const
     {
-        return this->items->getSize();
+        return items->getSize();
     }
     template <typename T>
     void ListSequence<T>::append(const T &item)
     {
-        this->items->resize(this->items->getSize() + 1);
-        this->getLast() = item;
+        items->insertAt(item, getLenght());
     }
     template <typename T>
     void ListSequence<T>::prepend(const T &item)
     {
-        this->items->resizeRevert(this->items->getSize() + 1);
-        this->getFirst() = item;
+        items->insertAt(item, 0);
     }
     template <typename T>
     void ListSequence<T>::insertAt(const T &item, uint64_t index)
     {
-        if (this->items->getSize() < index)
-            throw std::out_of_range("ListSequence<T>::insertAt");
-        this->items->resize(this->items->getSize() + 1);
-        for (uint64_t i = index; i < this->items->getSize() - 1; i++)
-        {
-            (*this->items)[i + 1] = (*this->items)[i];
-        }
-        (*this->items)[index] = item;
+        items->insertAt(item, index);
     }
     template <typename T>
     ListSequence<T> *ListSequence<T>::operator+(const Sequence<T> &seq) const
     {
-        ListSequence<T> *list = new ListSequence<T>(this->items->getSize() + seq.getLenght());
-        for (uint64_t i = 0; i < this->items->getSize(); i++)
+        ListSequence<T> *resSeq = new ListSequence<T>();
+        for (uint64_t i = 0; i < items->getSize(); i++)
         {
-            (*list)[i] = (*this->items)[i];
+            resSeq->append((*items)[i]);
         }
-        for (uint64_t i = this->items->getSize(); i < list->getLenght(); i++)
+        for (uint64_t i = 0; i < seq.getLenght(); i++)
         {
-            (*list)[i] = seq[i - this->items->getSize()];
+            resSeq->append(seq[i]);
         }
-        return list;
+        return resSeq;
     }
     template <typename T>
     bool ListSequence<T>::isEqual(T *items, uint64_t count) const
     {
-        if (this->items->getSize() < count)
-            return false;
-        for (uint64_t i = 0; i < count; i++)
-            if ((*this->items)[i] != items[i])
-                return false;
-        return true;
+        return this->items->isEqual(items, count);
     }
     template <typename T>
     ListSequence<T> *ListSequence<T>::copy() const
@@ -121,28 +107,28 @@ namespace cppl
     template <typename T>
     void ListSequence<T>::resize(uint64_t newSize)
     {
-        this->items->resize(newSize);
+        items->resize(newSize);
     }
     template <typename T>
     ListSequence<T> *ListSequence<T>::map(T (*func)(const T &, uint64_t)) const
     {
-        ListSequence<T> *seq = new ListSequence<T>(getLenght());
+        ListSequence<T> *resSeq = new ListSequence<T>();
         for(uint64_t i=0;i<getLenght();i++){
-            (*seq)[i] = func((*this)[i],i);
+            resSeq->append(func((*this)[i],i));
         }
-        return seq;
+        return resSeq;
     }
     template <typename T>
     ListSequence<T> *ListSequence<T>::where(bool (*func)(const T &, uint64_t)) const
     {
-        ListSequence<T> *seq = new ListSequence<T>();
+        ListSequence<T> *resSeq = new ListSequence<T>();
         for(uint64_t i=0;i<getLenght();i++){
             if(func((*this)[i],i))
             {
-                seq->append((*this)[i]);
+                resSeq->append((*this)[i]);
             }
         }
-        return seq;
+        return resSeq;
     }
     template <typename T>
     T ListSequence<T>::reduce(T (*func)(const T &, const T &), const T &c) const
@@ -154,19 +140,19 @@ namespace cppl
         return res;
     }
     template <typename T>
-    bool ListSequence<T>::operator==(const Sequence<T> &list) const
+    bool ListSequence<T>::operator==(const Sequence<T> &seq) const
     {
-        if (this->items->getSize() != list.getLenght())
+        if (this->items->getSize() != seq.getLenght())
             return false;
-        for (uint64_t i = 0; i < list.getLenght(); i++)
-            if ((*this->items)[i] != list[i])
+        for (uint64_t i = 0; i < seq.getLenght(); i++)
+            if ((*this->items)[i] != seq[i])
                 return false;
         return true;
     }
     template <typename T>
     ListSequence<T>::~ListSequence()
     {
-        delete this->items;
+        delete items;
     }
 }
 

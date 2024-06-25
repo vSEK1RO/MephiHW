@@ -15,8 +15,6 @@ namespace cppl
     public:
         ListSequence(const T *items, uint64_t count);
         ListSequence();
-        ListSequence(uint64_t lenght);
-        ListSequence(uint64_t length, const T &nullValue);
         ListSequence(const ListSequence<T> &list);
 
         // Const methods
@@ -40,6 +38,10 @@ namespace cppl
         bool operator==(const Sequence<T> &list) const override;
         ListSequence<T> *operator+(const Sequence<T> &seq) const override;
         T &operator[](uint64_t index) const override;
+
+        // Deprecated
+        ListSequence(uint64_t lenght);
+        ListSequence(uint64_t length, const T &nullValue);
 
         ~ListSequence();
 

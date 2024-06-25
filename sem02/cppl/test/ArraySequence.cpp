@@ -102,7 +102,7 @@ TEST(ArraySequence, operator_plus)
     ArraySequence<int> arr(a,3), brr(b,2);
     int c[] = {1, 2, 3, 1, 3};
     ArraySequence<int> * crr = arr + brr;
-    EXPECT_TRUE(crr->isEqual(c,3));
+    EXPECT_TRUE(crr->isEqual(c,5));
     delete crr;
 }
 TEST(ArraySequence, copy)

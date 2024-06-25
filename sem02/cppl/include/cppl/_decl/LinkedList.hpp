@@ -16,8 +16,12 @@ namespace cppl
     };
 
     template <typename T>
+    class ListSequence;
+
+    template <typename T>
     class LinkedList
     {
+    friend class ListSequence<T>;
     public:
         LinkedList(const T *items, uint64_t count);
         LinkedList();
@@ -55,8 +59,8 @@ namespace cppl
         LinkedListItem<T> *end;
 
         LinkedListItem<T> &getItem(uint64_t index) const;
-        void shiftPtr(LinkedListItem<T> *&ptr, uint64_t count) const;
-        void shiftPtrRevert(LinkedListItem<T> *&ptr, uint64_t count) const;
+        static void shiftPtr(LinkedListItem<T> *&ptr, uint64_t count);
+        static void shiftPtrRevert(LinkedListItem<T> *&ptr, uint64_t count);
         void shiftPtrErase(LinkedListItem<T> *&ptr, uint64_t count);
         void shiftPtrRevertErase(LinkedListItem<T> *&ptr, uint64_t count);
     };

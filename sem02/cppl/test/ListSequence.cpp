@@ -102,7 +102,7 @@ TEST(ListSequence, operator_plus)
     ListSequence<int> arr(a, 3), brr(b, 2);
     int c[] = {1, 2, 3, 1, 3};
     ListSequence<int> *crr = arr + brr;
-    EXPECT_TRUE(crr->isEqual(c, 3));
+    EXPECT_TRUE(crr->isEqual(c, 5));
     delete crr;
 }
 TEST(ListSequence, copy)

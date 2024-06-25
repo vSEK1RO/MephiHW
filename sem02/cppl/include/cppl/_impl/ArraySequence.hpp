@@ -110,12 +110,7 @@ namespace cppl
     template <typename T>
     bool ArraySequence<T>::isEqual(T *items, uint64_t count) const
     {
-        if (this->items->getSize() < count)
-            return false;
-        for (uint64_t i = 0; i < count; i++)
-            if ((*this->items)[i] != items[i])
-                return false;
-        return true;
+        return this->items->isEqual(items, count);
     }
     template <typename T>
     ArraySequence<T> *ArraySequence<T>::copy() const
