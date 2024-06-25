@@ -45,6 +45,34 @@ TEST(LinkedList, insertAt)
     EXPECT_EQ(arr,crr);
     EXPECT_EQ(arr,drr);
 }
+TEST(LinkedList, rearr)
+{
+    int a[] = {1, 2, 3};
+    int b[] = {2, 1, 3};
+    int c[] = {1, 3, 2};
+    int d[] = {2, 3, 1};
+    LinkedList<int> arr(a,3), brr(b, 3), crr(c, 3), drr(d, 3);
+    brr.rearr(0,1);
+    crr.rearr(1,2);
+    drr.rearr(2,0);
+    EXPECT_EQ(arr,brr);
+    EXPECT_EQ(arr,crr);
+    EXPECT_EQ(arr,drr);
+}
+TEST(LinkedList, find)
+{
+    int a[] = {1, 2, 2};
+    LinkedList<int> arr(a,3), brr(a, 0);
+    EXPECT_EQ(arr.find(2,(uint64_t)1),1);
+    EXPECT_EQ(brr.find(2,(uint64_t)3),-1);
+}
+TEST(LinkedList, count)
+{
+    int a[] = {1, 2, 2};
+    LinkedList<int> arr(a,3), brr(a, 0);
+    EXPECT_EQ(arr.count(2),2);
+    EXPECT_EQ(brr.count(2),0);
+}
 TEST(LinkedList, operator_deref_by_index)
 {
     int a[] = {1, 2, 3};
