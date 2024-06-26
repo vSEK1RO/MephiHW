@@ -32,6 +32,7 @@ namespace cppl
         void prepend(const T &item) override;
         void insertAt(const T &item, uint64_t index) override;
         void resize(uint64_t newSize) override;
+        void erase(uint64_t beginIndex, uint64_t endIndex) override;
         
         // Operators
         ListSequence<T> *operator=(const Sequence<T> &seq) override;

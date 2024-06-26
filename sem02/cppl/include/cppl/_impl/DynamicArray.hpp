@@ -113,6 +113,17 @@ namespace cppl
         this->size = newSize;
     }
     template <typename T>
+    void DynamicArray<T>::erase(uint64_t beginIndex, uint64_t endIndex)
+    {
+        if (beginIndex > endIndex || beginIndex > size || endIndex > size)
+            throw std::out_of_range("DynamicArray<T>::erase");
+        for (uint64_t i = 0; i < size - endIndex; i++)
+        {
+            items[i + beginIndex] = items[i + endIndex];
+        }
+        resize(size - endIndex + beginIndex);
+    }
+    template <typename T>
     bool DynamicArray<T>::isEqual(const T *items, uint64_t count) const
     {
         if (this->size < count)

@@ -123,6 +123,11 @@ namespace cppl
         this->items->resize(newSize);
     }
     template <typename T>
+    void ArraySequence<T>::erase(uint64_t beginIndex, uint64_t endIndex)
+    {
+        this->items->erase(beginIndex, endIndex);
+    }
+    template <typename T>
     ArraySequence<T> *ArraySequence<T>::map(T (*func)(const T &, uint64_t)) const
     {
         ArraySequence<T> *arr = new ArraySequence<T>(getLenght());

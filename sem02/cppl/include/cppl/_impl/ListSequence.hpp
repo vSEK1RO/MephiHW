@@ -109,11 +109,17 @@ namespace cppl
         items->resize(newSize);
     }
     template <typename T>
+    void ListSequence<T>::erase(uint64_t beginIndex, uint64_t endIndex)
+    {
+        this->items->erase(beginIndex, endIndex);
+    }
+    template <typename T>
     ListSequence<T> *ListSequence<T>::map(T (*func)(const T &, uint64_t)) const
     {
         ListSequence<T> *resSeq = new ListSequence<T>();
-        for(uint64_t i=0;i<getLenght();i++){
-            resSeq->append(func((*this)[i],i));
+        for (uint64_t i = 0; i < getLenght(); i++)
+        {
+            resSeq->append(func((*this)[i], i));
         }
         return resSeq;
     }
@@ -121,8 +127,9 @@ namespace cppl
     ListSequence<T> *ListSequence<T>::where(bool (*func)(const T &, uint64_t)) const
     {
         ListSequence<T> *resSeq = new ListSequence<T>();
-        for(uint64_t i=0;i<getLenght();i++){
-            if(func((*this)[i],i))
+        for (uint64_t i = 0; i < getLenght(); i++)
+        {
+            if (func((*this)[i], i))
             {
                 resSeq->append((*this)[i]);
             }
@@ -132,9 +139,10 @@ namespace cppl
     template <typename T>
     T ListSequence<T>::reduce(T (*func)(const T &, const T &), const T &c) const
     {
-        T res = func((*this)[0],c);
-        for(uint64_t i=1;i<getLenght();i++){
-            res = func((*this)[i],res);
+        T res = func((*this)[0], c);
+        for (uint64_t i = 1; i < getLenght(); i++)
+        {
+            res = func((*this)[i], res);
         }
         return res;
     }
@@ -143,9 +151,9 @@ namespace cppl
     {
         delete items;
         items = new LinkedList<T>(0);
-        for(uint64_t i=0;i<seq.getLenght();i++)
+        for (uint64_t i = 0; i < seq.getLenght(); i++)
         {
-            items->insertAt(seq[i],items->getSize());
+            items->insertAt(seq[i], items->getSize());
         }
         return this;
     }

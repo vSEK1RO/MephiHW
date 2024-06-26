@@ -27,6 +27,7 @@ namespace cppl
         virtual void prepend(const T &) = 0;
         virtual void insertAt(const T &, uint64_t) = 0;
         virtual void resize(uint64_t) = 0;
+        virtual void erase(uint64_t, uint64_t) = 0;
         
         // Operators
         virtual Sequence<T> *operator=(const Sequence<T> &) = 0;

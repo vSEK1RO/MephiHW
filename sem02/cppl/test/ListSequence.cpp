@@ -74,7 +74,7 @@ TEST(ListSequence, prepend)
 TEST(ListSequence, append_1e6)
 {
     ListSequence<int> arr(0);
-    for (uint64_t i = 0; i < 1e4; i++)
+    for (uint64_t i = 0; i < 1e6; i++)
     {
         arr.append(0);
     }
@@ -121,6 +121,21 @@ TEST(ListSequence, resize)
     arr.resize(2);
     EXPECT_TRUE(arr.isEqual(a, 2));
     EXPECT_EQ(arr.getLenght(), 2);
+}
+TEST(ListSequence, erase)
+{
+    int a[] = {1, 2, 3};
+    ListSequence<int> arr(a, 3);
+    ListSequence<int> brr(arr), crr(arr), drr(arr);
+    arr.erase(0,2);
+    brr.erase(1,3);
+    crr.erase(1,2);
+    drr.erase(0,3);
+    int c[] = {1, 3};
+    EXPECT_TRUE(arr.isEqual(a+2,1));
+    EXPECT_TRUE(brr.isEqual(a,1));
+    EXPECT_TRUE(crr.isEqual(c,2));
+    EXPECT_TRUE(drr.isEqual(a,0));
 }
 int map(const int &item, uint64_t index){
     return item*2;

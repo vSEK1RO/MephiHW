@@ -21,6 +21,7 @@ namespace cppl
 
         // Non const methods
         void resize(uint64_t newSize);
+        void erase(uint64_t beginIndex, uint64_t endIndex);
         
         // Operators
         T &operator[](uint64_t index) const;
