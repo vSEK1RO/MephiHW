@@ -21,6 +21,12 @@ namespace cppl
     template <typename T>
     Polynom<T> LinearSpace2D<T>::lagrangePolynomial() const
     {
+        Polynom<T> resPol;
+        for (uint64_t i = 0; i < data->getLenght(); i++)
+        {
+            resPol = resPol + kroneckerDelta(i) * (*data)[i].y;
+        }
+        return resPol;
     }
     template <typename T>
     Polynom<T> LinearSpace2D<T>::kroneckerDelta(uint64_t index) const
