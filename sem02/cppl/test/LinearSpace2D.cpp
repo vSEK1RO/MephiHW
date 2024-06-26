@@ -5,6 +5,7 @@
 #include <cppl/arr>
 #include <cppl/vec2d>
 #include <cppl/field>
+#include <cppl/fields.hpp>
 
 using namespace cppl;
 

@@ -1,2 +1,1 @@
 #include <cppl/_decl/Field.hpp>
-#include <cppl/fields/double.hpp>

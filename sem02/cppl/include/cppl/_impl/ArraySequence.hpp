@@ -2,6 +2,7 @@
 #define _IMPL_ARRAY_SEQUENCE_HPP
 
 #include <cstdint>
+#include <stdexcept>
 
 #include <cppl/_decl/ArraySequence.hpp>
 
@@ -150,6 +151,17 @@ namespace cppl
             res = func((*this)[i],res);
         }
         return res;
+    }
+    template <typename T>
+    ArraySequence<T> *ArraySequence<T>::operator=(const Sequence<T> &seq)
+    {
+        delete items;
+        items = new DynamicArray<T>(seq.getLenght());
+        for(uint64_t i=0;i<seq.getLenght();i++)
+        {
+            (*items)[i] = seq[i];
+        }
+        return this;
     }
     template <typename T>
     bool ArraySequence<T>::operator==(const Sequence<T> &arr) const

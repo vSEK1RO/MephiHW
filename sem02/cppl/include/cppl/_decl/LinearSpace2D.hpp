@@ -19,6 +19,9 @@ namespace cppl
 
         Polynom<T> lagrangePolynomial() const;
         Polynom<T> kroneckerDelta(uint64_t index) const;
+        
+        bool operator==(const LinearSpace2D<T> &linsp) const;
+        bool operator!=(const LinearSpace2D<T> &linsp) const;
 
         ~LinearSpace2D();
     };

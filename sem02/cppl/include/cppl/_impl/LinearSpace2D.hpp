@@ -54,6 +54,23 @@ namespace cppl
         return resPol;
     }
     template <typename T>
+    bool LinearSpace2D<T>::operator==(const LinearSpace2D<T> &linsp) const
+    {
+        if(data->getLenght()!=linsp.data->getLenght())
+            return false;
+        for(uint64_t i=0;i<data->getLenght();i++)
+        {
+            if((*data)[i]!=(*linsp.data)[i])
+                return false;
+        }
+        return true;
+    }
+    template <typename T>
+    bool LinearSpace2D<T>::operator!=(const LinearSpace2D<T> &linsp) const
+    {
+        return !(*this == linsp);
+    }
+    template <typename T>
     LinearSpace2D<T>::~LinearSpace2D()
     {
         delete data;

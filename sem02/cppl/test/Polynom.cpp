@@ -4,6 +4,7 @@
 #include <cppl/polynom>
 #include <cppl/arr>
 #include <cppl/field>
+#include <cppl/fields.hpp>
 
 using namespace cppl;
 

@@ -29,6 +29,7 @@ namespace cppl
         virtual void resize(uint64_t) = 0;
         
         // Operators
+        virtual Sequence<T> *operator=(const Sequence<T> &) = 0;
         virtual bool operator==(const Sequence<T> &) const = 0;
         virtual Sequence<T> *operator+(const Sequence<T> &) const = 0;
         virtual T &operator[](uint64_t) const = 0;

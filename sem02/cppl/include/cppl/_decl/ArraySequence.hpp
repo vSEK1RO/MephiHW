@@ -36,6 +36,7 @@ namespace cppl
         void resize(uint64_t newSize) override;
         
         // Operators
+        ArraySequence<T> *operator=(const Sequence<T> &seq) override;
         bool operator==(const Sequence<T> &arr) const override;
         ArraySequence<T> *operator+(const Sequence<T> &seq) const override;
         T &operator[](uint64_t index) const override;
