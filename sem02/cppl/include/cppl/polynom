@@ -1,0 +1,2 @@
+#include <cppl/_decl/Polynom.hpp>
+#include <cppl/_impl/Polynom.hpp>

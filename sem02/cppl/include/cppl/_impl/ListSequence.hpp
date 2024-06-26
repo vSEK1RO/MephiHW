@@ -1,4 +1,3 @@
-#pragma once
 #ifndef _IMPL_LIST_SEQUENCE
 #define _IMPL_LIST_SEQUENCE
 
@@ -138,6 +137,17 @@ namespace cppl
             res = func((*this)[i],res);
         }
         return res;
+    }
+    template <typename T>
+    ListSequence<T> *ListSequence<T>::operator=(const Sequence<T> &seq)
+    {
+        delete items;
+        items = new LinkedList<T>(0);
+        for(uint64_t i=0;i<seq.getLenght();i++)
+        {
+            items->insertAt(seq[i],items->getSize());
+        }
+        return this;
     }
     template <typename T>
     bool ListSequence<T>::operator==(const Sequence<T> &seq) const

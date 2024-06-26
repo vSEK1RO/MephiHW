@@ -1,0 +1,2 @@
+#include <cppl/_decl/LinearSpace2D.hpp>
+#include <cppl/_impl/LinearSpace2D.hpp>
