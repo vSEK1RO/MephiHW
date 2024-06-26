@@ -5,8 +5,7 @@ CC = g++
 CFLAGS = -Wall -Wextra -Werror -Wno-unused-parameter\
 	-fsanitize=address,undefined -O0 -g
 OBJS =
-TESTS = ArraySequence ListSequence DynamicArray LinkedList\
-	UniquePointer Polynom
+TESTS = LinearSpace2D
 
 LIB = cppl
 

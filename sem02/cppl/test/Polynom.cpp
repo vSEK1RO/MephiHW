@@ -19,7 +19,7 @@ TEST(Polynom, operator_mut)
     double arr[3] = {1, 4, 4};
     for (uint64_t i = 0; i < pol.coeff->getLenght(); i++)
     {
-        EXPECT_EQ((*pol.coeff)[i], arr[i]);
+        EXPECT_DOUBLE_EQ((*pol.coeff)[i], arr[i]);
     }
 }
 

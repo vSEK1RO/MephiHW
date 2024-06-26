@@ -22,6 +22,23 @@ namespace cppl
         coeff = pol.coeff->copy();
     }
     template <typename T>
+    Polynom<T> Polynom<T>::operator=(const Polynom<T> &pol)
+    {
+        delete coeff;
+        coeff = pol.coeff->copy();
+        return *this;
+    }
+    template <typename T>
+    bool Polynom<T>::operator==(const Polynom<T> &pol) const
+    {
+        return *coeff == *pol.coeff;
+    }
+    template <typename T>
+    bool Polynom<T>::operator!=(const Polynom<T> &pol) const
+    {
+        return !(*coeff == *pol.coeff);
+    }
+    template <typename T>
     Polynom<T> Polynom<T>::operator*(const Polynom<T> &pol) const
     {   
         uint64_t newLen = coeff->getLenght() + pol.coeff->getLenght() - 1;

@@ -10,15 +10,18 @@ namespace cppl
     class Polynom
     {
     public:
-    Sequence<Field<T>> *coeff;
+        Sequence<Field<T>> *coeff;
 
-    Polynom();
-    Polynom(const Sequence<Field<T>> &coeff);
-    Polynom(const Polynom<T> &pol);
-    
-    Polynom<T> operator*(const Polynom<T> &pol) const;
+        Polynom();
+        Polynom(const Sequence<Field<T>> &coeff);
+        Polynom(const Polynom<T> &pol);
 
-    ~Polynom();
+        Polynom<T> operator=(const Polynom<T> &pol);
+        bool operator==(const Polynom<T> &pol) const;
+        bool operator!=(const Polynom<T> &pol) const;
+        Polynom<T> operator*(const Polynom<T> &pol) const;
+
+        ~Polynom();
     };
 }
 

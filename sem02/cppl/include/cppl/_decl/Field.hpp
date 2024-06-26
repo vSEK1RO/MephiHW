@@ -7,6 +7,8 @@ namespace cppl
     class Field
     {
     public:
+        T data;
+
         Field();
         Field(const T &data);
 
@@ -24,8 +26,6 @@ namespace cppl
         Field<T> neutral() const;
 
         ~Field() = default;
-    private:
-        T data;
     };
 }
 

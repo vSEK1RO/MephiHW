@@ -2,6 +2,9 @@
 #define LINEAR_SPACE_2D_HPP
 
 #include <cppl/seq>
+#include <cppl/vec2d>
+#include <cppl/field>
+#include <cppl/polynom>
 
 namespace cppl
 {
@@ -9,24 +12,15 @@ namespace cppl
     class LinearSpace2D
     {
     public:
+        Sequence<Vector2D<T>> *data;
+
         LinearSpace2D();
-        LinearSpace2D(const Sequence<Field<T>> &x, const Sequence<Field<T>> &y);
+        LinearSpace2D(const Sequence<Vector2D<T>> &vec);
 
-        Sequence<Field<T>> *lagrangePolynomial() const;
-        Sequence<Field<T>> *kroneckerDelta(uint64_t index) const;
-        Sequence<Field<T>> *polynomialMut(const Sequence<Field<T>> &a, const Sequence<Field<T>> &b) const;
-
-        uint64_t getSize() const;
-        double &x(uint64_t index) const;
-        double &y(uint64_t index) const;
-        void normaliseLenght();
+        Polynom<T> lagrangePolynomial() const;
+        Polynom<T> kroneckerDelta(uint64_t index) const;
 
         ~LinearSpace2D();
-
-    private:
-        Sequence<Field<T>> *_x;
-        Sequence<Field<T>> *_y;
-        uint64_t size;
     };
 }
 

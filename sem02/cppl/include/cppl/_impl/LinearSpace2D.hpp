@@ -11,91 +11,46 @@ namespace cppl
     template <typename T>
     LinearSpace2D<T>::LinearSpace2D()
     {
-        _x = new ArraySequence<Field<double>>();
-        _y = new ArraySequence<Field<double>>();
-        size = 0;
+        data = new ArraySequence<Vector2D<T>>();
     }
     template <typename T>
-    LinearSpace2D<T>::LinearSpace2D(const Sequence<Field<double>> &x, const Sequence<Field<double>> &y)
+    LinearSpace2D<T>::LinearSpace2D(const Sequence<Vector2D<T>> &vec)
     {
-        this->_x = x.copy();
-        this->_y = y.copy();
-        normaliseLenght();
+        data = vec.copy();
     }
-    Sequence<Field<double>> *template <typename T>
-    LinearSpace2D<T>::lagrangePolynomial() const
+    template <typename T>
+    Polynom<T> LinearSpace2D<T>::lagrangePolynomial() const
     {
     }
-    Sequence<Field<double>> *template <typename T>
-    LinearSpace2D<T>::kroneckerDelta(uint64_t index) const
+    template <typename T>
+    Polynom<T> LinearSpace2D<T>::kroneckerDelta(uint64_t index) const
     {
-        Sequence<Field<double>> *k;
-        ArraySequence<ArraySequence<Field<double>>> ks;
-        for (uint64_t i = 0; i < size; i++)
+        if (index >= data->getLenght())
+        {
+            throw std::out_of_range("LinearSpace2D<T>::kroneckerDelta");
+        }
+        Polynom<T> resPol;
+        ArraySequence<Polynom<T>> buff;
+        for (uint64_t i = 0; i < data->getLenght(); i++)
         {
             if (i == index)
                 continue;
-            ArraySequence<Field<double>> buff;
-            buff.append(-(*_x)[i] / ((*_x)[index] - (*_x)[i]));
-            buff.append(1 / ((*_x)[index] - (*_x)[i]));
-            ks.append(buff);
+            Field<T> magnitute = (*data)[index].x - (*data)[i].x;
+            buff.append(Polynom<T>());
+            buff.getLast().coeff->append(-(*data)[i].x / magnitute.data);
+            buff.getLast().coeff->append(1.0 / magnitute.data);
         }
-        k = polynomialMut(ks[0], ks[1]);
-        for (uint64_t i = 2; i < ks.getLenght(); i++)
+        resPol = buff[0] * buff[1];
+        for (uint64_t i = 2; i < buff.getLenght(); i++)
         {
-            ArraySequence<Field<double>> buff = *k;
-            delete k;
-            k = polynomialMut(ks[2], buff);
+            resPol = buff[2] * resPol;
         }
-        return k;
-    }
-    Sequence<Field<double>> *template <typename T>
-    LinearSpace2D<T>::polynomialMut(const Sequence<Field<double>> &k1, const Sequence<Field<double>> &k2) const
-    {
-        ArraySequence<Field<double>> *k = new ArraySequence<Field<double>>(k1.getLenght() + k2.getLenght() - 2);
-        for (uint64_t i1 = 0; i1 < k1.getLenght(); i1++)
-        {
-            for (uint64_t i2 = 0; i2 < k2.getLenght(); i2++)
-            {
-                (*k)[i1 + i2] += k1[i1] * k2[i2];
-            }
-        }
-        return k;
-    }
-    uint64_t template <typename T>
-    LinearSpace2D<T>::getSize() const
-    {
-        return size;
-    }
-    double &template <typename T>
-    LinearSpace2D<T>::x(uint64_t index) const
-    {
-        return (*_x)[index];
-    }
-    double &template <typename T>
-    LinearSpace2D<T>::y(uint64_t index) const
-    {
-        return (*_y)[index];
-    }
-    void template <typename T>
-    LinearSpace2D<T>::normaliseLenght()
-    {
-        if (_x->getLenght() < _y->getLenght())
-        {
-            _y->resize(_x->getLenght());
-            size = _x->getLenght();
-        }
-        else
-        {
-            _x->resize(_y->getLenght());
-            size = _y->getLenght();
-        }
+        return resPol;
     }
     template <typename T>
     LinearSpace2D<T>::~LinearSpace2D()
     {
-        delete _x;
-        delete _y;
+        delete data;
     }
 }
 
