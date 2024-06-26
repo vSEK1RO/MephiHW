@@ -16,6 +16,8 @@ namespace cppl
         Polynom(const Sequence<Field<T>> &coeff);
         Polynom(const Polynom<T> &pol);
 
+        Field<T> calc(const Field<T> &val) const;
+
         Polynom<T> operator=(const Polynom<T> &pol);
         bool operator==(const Polynom<T> &pol) const;
         bool operator!=(const Polynom<T> &pol) const;

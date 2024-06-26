@@ -8,6 +8,16 @@
 
 using namespace cppl;
 
+TEST(Polynom, calc)
+{
+    ArraySequence<Field<double>> a;
+    for (uint64_t i = 1; i < 3; i++)
+    {
+        a.append(Field<double>(i));
+    }
+    Polynom<double> pol(a);
+    EXPECT_DOUBLE_EQ(pol.calc(1).data, 3);
+}
 TEST(Polynom, operator_mut)
 {
     ArraySequence<Field<double>> a;
@@ -34,7 +44,7 @@ TEST(Polynom, operator_mut_val)
     pola = pola * Field<double>(2.0);
     for (uint64_t i = 0; i < pola.coeff->getLenght(); i++)
     {
-        EXPECT_DOUBLE_EQ((*pola.coeff)[i].data, 2*(*polb.coeff)[i].data);
+        EXPECT_DOUBLE_EQ((*pola.coeff)[i].data, 2 * (*polb.coeff)[i].data);
     }
 }
 TEST(Polynom, operator_mut_sum)

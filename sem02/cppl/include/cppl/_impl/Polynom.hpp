@@ -1,6 +1,8 @@
 #ifndef _IMPL_POLYNOM_HPP
 #define _IMPL_POLYNOM_HPP
 
+#include <cmath>
+
 #include <cppl/arr>
 #include <cppl/polynom>
 
@@ -20,6 +22,25 @@ namespace cppl
     Polynom<T>::Polynom(const Polynom<T> &pol)
     {
         coeff = pol.coeff->copy();
+    }
+    template <typename T>
+    Field<T> Polynom<T>::calc(const Field<T> &val) const
+    {
+        Field<T> res;
+        Field<T> buff = val;
+        for (uint64_t i = 0; i < coeff->getLenght(); i++)
+        {
+            if (i == 0)
+            {
+                res = res + (*coeff)[i];
+            }
+            else
+            {
+                res = res + (*coeff)[i] * buff;
+            }
+            buff = buff * val;
+        }
+        return res;
     }
     template <typename T>
     Polynom<T> Polynom<T>::operator=(const Polynom<T> &pol)
