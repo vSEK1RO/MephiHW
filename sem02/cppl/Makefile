@@ -5,7 +5,7 @@ CC = g++
 CFLAGS = -Wall -Wextra -Werror -Wno-unused-parameter\
 	-fsanitize=address,undefined -O0 -g
 OBJS =
-TESTS = LinearSpace2D
+TESTS = LinearSpace2D Polynom
 
 LIB = cppl
 
