@@ -16,7 +16,9 @@ TEST(Polynom, calc)
         a.append(Field<double>(i));
     }
     Polynom<double> pol(a);
-    EXPECT_DOUBLE_EQ(pol.calc(1).data, 3);
+    EXPECT_DOUBLE_EQ(pol.calc(Field<double>(2)).data, 5);
+    Polynom<double> polb;
+    EXPECT_DOUBLE_EQ(polb.calc(Field<double>(1)).data, 0);
 }
 TEST(Polynom, operator_mut)
 {

@@ -27,17 +27,10 @@ namespace cppl
     Field<T> Polynom<T>::calc(const Field<T> &val) const
     {
         Field<T> res;
-        Field<T> buff = val;
+        Field<T> buff = res.neutral();
         for (uint64_t i = 0; i < coeff->getLenght(); i++)
         {
-            if (i == 0)
-            {
-                res = res + (*coeff)[i];
-            }
-            else
-            {
-                res = res + (*coeff)[i] * buff;
-            }
+            res = res + (*coeff)[i] * buff;
             buff = buff * val;
         }
         return res;

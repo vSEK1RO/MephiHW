@@ -8,7 +8,7 @@ DEPS = cppl
 
 CC = g++
 DBG = gdb
-CFLAGS = -Wall -Wextra -Werror -O0 -Wno-unused-parameter
+CFLAGS = -Wall -Wextra -Werror -O0 -g -Wno-unused-parameter
 OBJS = Ui Graph
 
 INCDIR = include

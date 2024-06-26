@@ -1,11 +1,12 @@
 #include "../include/Graph.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 Graph::Graph(Ui &ui)
 {
     this->ui = &ui;
-    arr = new cppl::ArraySequence<cppl::LinearSpace2D<int>>(4);
+    arr = new cppl::ArraySequence<cppl::LinearSpace2D<double>>(4);
 }
 void Graph::initHandler()
 {
@@ -14,14 +15,14 @@ void Graph::initHandler()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
         {
             delete arr;
-            arr = new cppl::ArraySequence<cppl::LinearSpace2D<int>>(4);
+            arr = new cppl::ArraySequence<cppl::LinearSpace2D<double>>(4);
             while (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
             {
             }
         }
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            cppl::Vector2D<int> pos(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
+            cppl::Vector2D<double> pos(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
             if (ui->getColor() == sf::Color::Red)
             {
                 (*arr)[0].data->append(pos);
@@ -47,7 +48,6 @@ void Graph::initHandler()
 void Graph::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     sf::CircleShape bufferDot(10);
-    bufferDot.setOutlineColor(sf::Color::White);
     sf::Color color;
     for (uint64_t i = 0; i < arr->getLenght(); i++)
     {
@@ -68,8 +68,18 @@ void Graph::draw(sf::RenderTarget &target, sf::RenderStates states) const
         {
             bufferDot.setPosition((*(*arr)[i].data)[j].x.data, (*(*arr)[i].data)[j].y.data);
             bufferDot.setFillColor(color);
-            bufferDot.setOutlineThickness(0);
             target.draw(bufferDot);
+        }
+        if((*arr)[i].data->getLenght()>0)
+        {
+            cppl::Polynom<double> pol = (*arr)[i].lagrangePolynomial();
+            sf::VertexArray lines(sf::LineStrip, 0);
+            for(uint64_t j = 0; j < 1920; j++)
+            {
+                sf::Vector2f bufferVec(j,pol.calc(cppl::Field<double>(j)).data);
+                lines.append(sf::Vertex(bufferVec,color));
+            }
+            target.draw(lines);
         }
     }
 }

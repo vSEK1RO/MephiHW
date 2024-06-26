@@ -28,3 +28,5 @@ namespace cppl
 }
 
 #endif
+
+void NewFunction(cppl::Polynom<double> &pol, double arr[4]);

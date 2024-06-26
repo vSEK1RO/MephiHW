@@ -15,7 +15,7 @@ public:
     ~Graph();
 private:
     Ui *ui;
-    cppl::ArraySequence<cppl::LinearSpace2D<int>> *arr;
+    cppl::ArraySequence<cppl::LinearSpace2D<double>> *arr;
 };
 
 #endif

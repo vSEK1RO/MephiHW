@@ -46,10 +46,12 @@ namespace cppl
             buff.getLast().coeff->append(-(*data)[i].x / magnitute.data);
             buff.getLast().coeff->append(1.0 / magnitute.data);
         }
-        resPol = buff[0] * buff[1];
-        for (uint64_t i = 2; i < buff.getLenght(); i++)
-        {
-            resPol = buff[2] * resPol;
+        if(buff.getLenght()>1){
+            resPol = buff[0] * buff[1];
+            for (uint64_t i = 2; i < buff.getLenght(); i++)
+            {
+                resPol = buff[2] * resPol;
+            }
         }
         return resPol;
     }
