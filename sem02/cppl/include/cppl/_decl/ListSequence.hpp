@@ -31,6 +31,7 @@ namespace cppl
         void append(const T &item) override;
         void prepend(const T &item) override;
         void insertAt(const T &item, uint64_t index) override;
+        void insertSeqAt(const Sequence<T> &seq, uint64_t index) override;
         void resize(uint64_t newSize) override;
         void erase(uint64_t beginIndex, uint64_t endIndex) override;
         

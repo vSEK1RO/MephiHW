@@ -94,6 +94,14 @@ namespace cppl
         (*this->items)[index] = item;
     }
     template <typename T>
+    void ArraySequence<T>::insertSeqAt(const Sequence<T> &seq, uint64_t index)
+    {
+        for(uint64_t i=0; i<seq.getLenght(); i++)
+        {
+            insertAt(seq[i],index+i);
+        }
+    }
+    template <typename T>
     ArraySequence<T> *ArraySequence<T>::operator+(const Sequence<T> &seq) const
     {
         ArraySequence<T> *arr = new ArraySequence<T>(this->items->getSize() + seq.getLenght());

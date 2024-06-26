@@ -26,6 +26,7 @@ namespace cppl
         virtual void append(const T &) = 0;
         virtual void prepend(const T &) = 0;
         virtual void insertAt(const T &, uint64_t) = 0;
+        virtual void insertSeqAt(const Sequence<T> &, uint64_t) = 0;
         virtual void resize(uint64_t) = 0;
         virtual void erase(uint64_t, uint64_t) = 0;
         

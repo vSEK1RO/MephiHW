@@ -95,6 +95,15 @@ TEST(ListSequence, insertAt)
     arr.insertAt(2, 1);
     EXPECT_TRUE(arr.isEqual(a, 3));
 }
+TEST(ListSequence, insertSeqAt)
+{
+    int a[] = {1, 2, 3};
+    int b[] = {1, 3};
+    int c[] = {1, 2, 1, 3, 3};
+    ListSequence<int> arr(a, 3), brr(b, 2);
+    arr.insertSeqAt(brr,2);
+    EXPECT_TRUE(arr.isEqual(c,5));
+}
 TEST(ListSequence, operator_plus)
 {
     int a[] = {1, 2, 3};

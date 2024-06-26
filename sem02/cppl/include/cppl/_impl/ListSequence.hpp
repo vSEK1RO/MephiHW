@@ -80,6 +80,14 @@ namespace cppl
         items->insertAt(item, index);
     }
     template <typename T>
+    void ListSequence<T>::insertSeqAt(const Sequence<T> &seq, uint64_t index)
+    {
+        for(uint64_t i=0; i<seq.getLenght(); i++)
+        {
+            insertAt(seq[i],index+i);
+        }
+    }
+    template <typename T>
     ListSequence<T> *ListSequence<T>::operator+(const Sequence<T> &seq) const
     {
         ListSequence<T> *resSeq = new ListSequence<T>();
